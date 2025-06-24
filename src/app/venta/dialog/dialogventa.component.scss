@@ -1,0 +1,27 @@
+.venta-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.concepto-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+
+.add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.conceptos-table {
+  width: 100%;
+  margin-top: 16px;
+}
