@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Apicliente } from '../services/apicliente';
 import { Response } from '../models/response';
 import { CommonModule } from '@angular/common';
@@ -35,11 +35,11 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
   templateUrl: './cliente.html',
   styleUrls: ['./cliente.scss']
 })
-export class ClienteComponent implements OnInit {
-  isLoading: boolean = false;
-  public lst = new MatTableDataSource<Cliente>();
-  public columnas: string[] = ['id', 'nombre', 'actions'];
-  readonly width: string = '300px';
+export class ClienteComponent implements OnInit, AfterViewInit {
+  isLoading = false;
+  lst = new MatTableDataSource<Cliente>();
+  columnas: string[] = ['id', 'nombre', 'actions'];
+  readonly width = '300px';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -54,13 +54,24 @@ export class ClienteComponent implements OnInit {
     this.getClientes();
   }
 
+  ngAfterViewInit() {
+    this.lst.paginator = this.paginator;
+    this.lst.sort = this.sort;
+    // Opcional: define cómo ordenar el nombre ignorando mayúsculas/minúsculas
+    this.lst.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'nombre': return item.nombre.toLowerCase();
+        case 'id': return item.id;
+        default: return '';
+      }
+    };
+  }
+
   getClientes() {
     this.isLoading = true;
     this.apiCliente.getClientes().subscribe({
-      next: (response: Response) => {
+      next: (response) => {
         this.lst.data = response.data;
-        this.lst.paginator = this.paginator;
-        this.lst.sort = this.sort;
         this.isLoading = false;
       },
       error: (err) => {
@@ -98,9 +109,7 @@ export class ClienteComponent implements OnInit {
       if (result) {
         this.apiCliente.delete(cliente.id).subscribe(response => {
           if (response.exito === 1) {
-            this.snackBar.open('Cliente eliminado con éxito', '', {
-              duration: 2000
-            });
+            this.snackBar.open('Cliente eliminado con éxito', '', { duration: 2000 });
             this.getClientes();
           }
         });

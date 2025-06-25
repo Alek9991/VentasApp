@@ -1,19 +1,24 @@
-<!-- Toolbar con botón Nuevo -->
-<div class="toolbar">
+<!-- Título con ícono y botón Nuevo -->
+<div class="toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+  <h2 style="margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+    <mat-icon>people</mat-icon>
+    Clientes
+  </h2>
   <button mat-raised-button color="primary" (click)="openAdd()">
     <mat-icon>add</mat-icon>
     Nuevo
   </button>
 </div>
 
-<!-- Campo de búsqueda -->
-<mat-form-field appearance="outline" class="search-field">
-  <mat-label>Buscar</mat-label>
+
+<!-- Campo de búsqueda que ocupa todo el ancho -->
+<mat-form-field appearance="outline" class="search-field" style="width: 100%; margin-bottom: 1rem;">
+  <mat-label>Buscar clientes</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Escribe un nombre...">
 </mat-form-field>
 
 <!-- Tabla con scroll -->
-<div class="table-container">
+<div class="table-container" style="overflow-x: auto;">
   <table mat-table [dataSource]="lst" class="mat-elevation-z4" matSort>
 
     <!-- Columna ID -->
@@ -47,7 +52,7 @@
   </table>
 </div>
 
-<!-- Spinner opcional mientras carga -->
-<div class="loading-spinner" *ngIf="isLoading">
+<!-- Spinner mientras carga -->
+<div class="loading-spinner" *ngIf="isLoading" style="text-align: center; margin-top: 1rem;">
   <mat-spinner diameter="40"></mat-spinner>
 </div>

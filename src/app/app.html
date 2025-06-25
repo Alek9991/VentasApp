@@ -18,6 +18,10 @@
         <mat-icon>shopping_cart</mat-icon>
         <span>Venta</span>
       </a>
+      <a mat-list-item routerLink="/producto" routerLinkActive="active-link">
+        <mat-icon>shopping_cart</mat-icon>
+        <span>Producto</span>
+      </a>
 
       <a mat-list-item (click)="logout()" *ngIf="usuario">
         <mat-icon>logout</mat-icon>
