@@ -13,7 +13,7 @@ const httpOption = {
   providedIn: 'root'
 })
 export class Apicliente {
-  url: string = "https://localhost:44330/api/cliente";
+  url: string = "https://localhost:44321/api/cliente";
   constructor(
     private _http: HttpClient
   ) { }

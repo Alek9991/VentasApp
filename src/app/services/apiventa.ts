@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Venta } from '../models/venta';
 import { Response } from '../models/response';
+import { clienteVenta } from '../models/clienteVenta';
+import { DetalleVenta } from '../models/detalleVenta';
 
 const httpOption= {
   headers: new HttpHeaders({
@@ -16,7 +18,7 @@ const httpOption= {
 })
 export class Apiventa {
 
-  url: string = 'https://localhost:44330/api/Venta';
+  url: string = 'https://localhost:44321/api/venta';
   constructor(
     private _http: HttpClient
   ) { }
@@ -24,4 +26,11 @@ export class Apiventa {
     return this._http.post<Response>(this.url, venta, httpOption)
 
   }
+  getClientesConVentas(): Observable<clienteVenta[]> {
+    return this._http.get<clienteVenta[]>(`${this.url}/ClientesConVentas`);
+  }
+
+  getDetalleVenta(id: number): Observable<DetalleVenta[]> {
+  return this._http.get<DetalleVenta[]>(`${this.url}/DetalleVenta/${id}`);
+}
 }

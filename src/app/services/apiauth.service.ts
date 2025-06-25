@@ -17,7 +17,7 @@ const httpOption={
     
 })
 export class ApiAuthService {
-    url: string ='https://localhost:44330/api/User/login';
+    url: string ='https://localhost:44321/api/User/login';
 
     private usuarioSubject: BehaviorSubject<Usuario | null>;
     public usuario: Observable<Usuario | null>;
