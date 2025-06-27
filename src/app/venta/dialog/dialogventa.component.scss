@@ -1,27 +1,40 @@
-.venta-dialog-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
 .full-width {
   width: 100%;
 }
 
 .concepto-form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 16px;
-  align-items: end;
-}
-
-.add-button {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 15px;
+
+  mat-form-field {
+    flex: 1 1 30%;
+    min-width: 150px;
+  }
+
+  .add-button {
+    align-self: center;
+    margin-top: 8px;
+  }
 }
 
 .conceptos-table {
-  width: 100%;
-  margin-top: 16px;
+  margin-top: 20px;
+
+  table {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  h3 {
+    margin-bottom: 10px;
+  }
+
+  .total {
+    text-align: right;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
 }

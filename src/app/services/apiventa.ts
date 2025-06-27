@@ -33,15 +33,20 @@ export class Apiventa {
   getDetalleVenta(id: number): Observable<DetalleVenta[]> {
   return this._http.get<DetalleVenta[]>(`${this.url}/DetalleVenta/${id}`);
 }
-
-//actualizar venta
-updateVenta(id: number, venta: Venta): Observable<Response> {
-  return this._http.put<Response>(`${this.url}/${id}`, venta, httpOption);
-}
-//elimiar venta 
-
 deleteVenta(id: number): Observable<Response> {
   return this._http.delete<Response>(`${this.url}/${id}`);
 }
+// apiventa.service.ts (o venta.ts según tu organización)
+actualizarCantidad(id: number, cantidad: number) {
+  const url = `${this.url}/ActualizarCantidad`;
+  const body = { id, cantidad };
+  return this._http.put<Response>(url, body);
+}
+actualizarVenta(id: number, venta: any): Observable<Response> {
+  return this._http.put<Response>(`${this.url}/${id}`, venta, httpOption);
+
+}
+
+
 
 }

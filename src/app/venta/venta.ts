@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-
+import { Response } from '../models/response'; // Ajusta la ruta según tu estructura
 import { DialogVentaComponent } from './dialog/dialogventa.component';
 import { Apiventa } from '../services/apiventa';
 import { HttpClientModule } from '@angular/common/http';
@@ -15,6 +15,7 @@ import { DetalleVenta } from '../models/detalleVenta';
 import { DetalleVentaDialogComponent } from './dialog/detalleventadialog';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { EditarVentaDialogComponent } from './dialog/editarventadialog.component';
 
 @Component({
   selector: 'app-venta',
@@ -28,7 +29,8 @@ import { MatPaginator } from '@angular/material/paginator';
     MatSnackBarModule,
     MatIconModule,
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    
   ],
   templateUrl: './venta.html',
   styleUrl: './venta.scss'
@@ -57,32 +59,24 @@ export class Venta implements OnInit {
   ) {}
 
   
-
-  ngOnInit(): void {
-    this.apiventa.getClientesConVentas().subscribe(data => {
-      this.dataSource.data = data;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.dataSource.sortingDataAccessor = (item, property) => {
-        switch (property) {
-          case 'nombreCliente': return item.nombreCliente.toLowerCase();
-          case 'clienteID': return item.clienteID;
-          case 'ventaID': return item.ventaID;
-          case 'fechaVenta': return item.fechaVenta;
-          case 'totalVenta': return item.totalVenta;
-          default: return '';
-        }
-      };
-    });
-  }
-  /*ngOnInit(): void {
-    this.apiventa.getClientesConVentas().subscribe(data => {
-      this.ventas = data;
-      this.dataSource.data = this.ventas;
-
-    });
-  }*/
-  
+ngOnInit(): void {
+  this.apiventa.getClientesConVentas().subscribe(data => {
+    this.ventas = data;  // ← Agrega esta línea
+    this.dataSource.data = data;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'nombreCliente': return item.nombreCliente.toLowerCase();
+        case 'clienteID': return item.clienteID;
+        case 'ventaID': return item.ventaID;
+        case 'fechaVenta': return item.fechaVenta;
+        case 'totalVenta': return item.totalVenta;
+        default: return '';
+      }
+    };
+  });
+}
 
   openAdd() {
     const dialogRef = this.dialog.open(DialogVentaComponent, {
@@ -96,40 +90,45 @@ export class Venta implements OnInit {
 
   verDetalle(id: number) {
   this.apiventa.getDetalleVenta(id).subscribe(data => {
-    this.dialog.open(DetalleVentaDialogComponent, {
+    const dialogRef = this.dialog.open(DetalleVentaDialogComponent, {
       width: '700px',
       data: data
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado === true) {
+        this.ngOnInit(); // Refrescar lista solo si hubo cambios
+      }
     });
   });
 }
 
-
-
-editarVenta(id: number) 
-{
-  // OBTIENE la venta base (sin conceptos)
+editarVenta(id: number) {
   const ventaBase = this.ventas.find(v => v.ventaID === id);
   if (!ventaBase) return;
 
-  // OPCIONAL: podrías obtener los conceptos con getDetalleVenta si los necesitas
   this.apiventa.getDetalleVenta(id).subscribe(conceptos => {
-    const dialogRef = this.dialog.open(DialogVentaComponent, {
+    const dialogRef = this.dialog.open(EditarVentaDialogComponent, {
       width: this.width,
       data: {
-        id: ventaBase.ventaID,
+        ventaID: ventaBase.ventaID, // ← Este sí existe, confirmado
         idCliente: ventaBase.clienteID,
+        fechaVenta: ventaBase.fechaVenta.substring(0, 10), // ← Formato válido para input type="date"
         conceptos: conceptos
       }
     });
 
-    dialogRef.afterClosed().subscribe(() => this.ngOnInit()); // refresca lista
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.ngOnInit(); // refrescar lista si hubo cambios
+      }
+    });
   });
 }
 
-
   eliminarVenta(id: number) {
   if (confirm(`¿Estás seguro de eliminar la venta ${id}?`)) {
-    this.apiventa.deleteVenta(id).subscribe(response => {
+    this.apiventa.deleteVenta(id).subscribe((response: Response) => {
       if (response.exito === 1) {
         this.snackbar.open('Venta eliminada correctamente', '', { duration: 2000 });
         this.ngOnInit(); // refrescar la lista
@@ -139,7 +138,6 @@ editarVenta(id: number)
     });
   }
 }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource.filter = filterValue;

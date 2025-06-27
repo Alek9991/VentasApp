@@ -43,9 +43,12 @@
     <button mat-icon-button color="primary" (click)="verDetalle(row.ventaID)">
       <mat-icon>visibility</mat-icon>
     </button>
-    <button mat-icon-button color="accent" (click)="editarVenta(row.ventaID)">
-      <mat-icon>edit</mat-icon>
-    </button>
+       <!-- ✅ Este es el que tenía error -->
+    <button mat-icon-button (click)="editarVenta(row.ventaID)">
+  <mat-icon>edit</mat-icon>
+</button>
+
+
     <button mat-icon-button color="warn" (click)="eliminarVenta(row.ventaID)">
       <mat-icon>delete</mat-icon>
     </button>

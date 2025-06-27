@@ -31,4 +31,8 @@ export class ApiProducto {
   eliminarProducto(id: number): Observable<Response> {
     return this._http.delete<Response>(`${this.url}/${id}`);
   }
+  getProductoPorId(id: number): Observable<Response> {
+  return this._http.get<Response>(`${this.url}/${id}`);
+}
+
 }

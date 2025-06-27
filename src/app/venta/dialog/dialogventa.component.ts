@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { ApiProducto } from "../../services/apiproducto";
 
 
 @Component({
@@ -39,6 +40,7 @@ export class DialogVentaComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogVentaComponent>,
+     public apiProducto: ApiProducto,
     public snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
     public apiVenta: Apiventa
@@ -79,5 +81,31 @@ export class DialogVentaComponent {
     }
   });
 }
+actualizarImporte() {
+  const idProducto = this.conceptoForm.get('idProducto')?.value;
+
+  if (idProducto) {
+    this.apiProducto.getProductoPorId(idProducto).subscribe({
+      next: (response) => {
+        if (response.exito === 1 && response.data) {
+          const cantidad = this.conceptoForm.get('cantidad')?.value || 0;
+          const precioUnitario = response.data.precioUnitario;
+
+          this.conceptoForm.patchValue({
+            precioUnitario: precioUnitario,
+            importe: cantidad * precioUnitario
+          });
+        } else {
+          this.snackBar.open('Producto no encontrado', '', { duration: 2000 });
+        }
+      },
+      error: (error) => {
+        console.error(error);
+        this.snackBar.open('Error al obtener el producto', '', { duration: 2000 });
+      }
+    });
+  }
+}
+
 
 }

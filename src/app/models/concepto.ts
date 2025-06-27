@@ -1,6 +1,6 @@
 export interface Concepto {
-    cantidad: number;
-    idProducto: number;
-    importe: number;
-    precioUnitario:number;
+  idProducto: number;
+  cantidad: number;
+  precioUnitario: number;
+  importe: number;
 }
