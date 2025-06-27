@@ -1,3 +1,4 @@
+<h2>Ventas</h2>
 <div>
     <button mat-raised-button color="primary"(click)="openAdd()">Nueva venta</button>
 </div>
@@ -8,7 +9,7 @@
   <input matInput (keyup)="applyFilter($event)" placeholder="Nombre o ID de cliente">
 </mat-form-field>
 
-<h2>Clientes con ventas</h2>
+
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
   <ng-container matColumnDef="clienteID">

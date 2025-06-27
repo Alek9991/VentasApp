@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.table-container {
+  position: relative;
+  min-height: 100px;
+}
+
+mat-spinner {
+  margin: 40px auto;
+  display: block;
+}
