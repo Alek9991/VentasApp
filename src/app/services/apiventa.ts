@@ -33,4 +33,15 @@ export class Apiventa {
   getDetalleVenta(id: number): Observable<DetalleVenta[]> {
   return this._http.get<DetalleVenta[]>(`${this.url}/DetalleVenta/${id}`);
 }
+
+//actualizar venta
+updateVenta(id: number, venta: Venta): Observable<Response> {
+  return this._http.put<Response>(`${this.url}/${id}`, venta, httpOption);
+}
+//elimiar venta 
+
+deleteVenta(id: number): Observable<Response> {
+  return this._http.delete<Response>(`${this.url}/${id}`);
+}
+
 }

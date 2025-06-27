@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 
 import { DialogVentaComponent } from './dialog/dialogventa.component';
@@ -13,6 +13,8 @@ import { CommonModule } from '@angular/common';
 import { clienteVenta } from '../models/clienteVenta';
 import { DetalleVenta } from '../models/detalleVenta';
 import { DetalleVentaDialogComponent } from './dialog/detalleventadialog';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-venta',
@@ -42,6 +44,10 @@ export class Venta implements OnInit {
   ];
 
   public ventas: clienteVenta[] = [];
+  dataSource = new MatTableDataSource<clienteVenta>([]); // ← ¡Aquí cambia!
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
   readonly width: string = '600px';
 
   constructor(
@@ -50,11 +56,33 @@ export class Venta implements OnInit {
     public snackbar: MatSnackBar
   ) {}
 
+  
+
   ngOnInit(): void {
     this.apiventa.getClientesConVentas().subscribe(data => {
-      this.ventas = data;
+      this.dataSource.data = data;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.dataSource.sortingDataAccessor = (item, property) => {
+        switch (property) {
+          case 'nombreCliente': return item.nombreCliente.toLowerCase();
+          case 'clienteID': return item.clienteID;
+          case 'ventaID': return item.ventaID;
+          case 'fechaVenta': return item.fechaVenta;
+          case 'totalVenta': return item.totalVenta;
+          default: return '';
+        }
+      };
     });
   }
+  /*ngOnInit(): void {
+    this.apiventa.getClientesConVentas().subscribe(data => {
+      this.ventas = data;
+      this.dataSource.data = this.ventas;
+
+    });
+  }*/
+  
 
   openAdd() {
     const dialogRef = this.dialog.open(DialogVentaComponent, {
@@ -75,15 +103,46 @@ export class Venta implements OnInit {
   });
 }
 
-  editarVenta(id: number) {
-    // Aquí podrías abrir otro diálogo para editar o navegar a otra ruta
-    console.log('Editar venta', id);
-    this.snackbar.open(`Función editar: venta ID ${id}`, 'Cerrar', { duration: 3000 });
-  }
+
+
+editarVenta(id: number) 
+{
+  // OBTIENE la venta base (sin conceptos)
+  const ventaBase = this.ventas.find(v => v.ventaID === id);
+  if (!ventaBase) return;
+
+  // OPCIONAL: podrías obtener los conceptos con getDetalleVenta si los necesitas
+  this.apiventa.getDetalleVenta(id).subscribe(conceptos => {
+    const dialogRef = this.dialog.open(DialogVentaComponent, {
+      width: this.width,
+      data: {
+        id: ventaBase.ventaID,
+        idCliente: ventaBase.clienteID,
+        conceptos: conceptos
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(() => this.ngOnInit()); // refresca lista
+  });
+}
+
 
   eliminarVenta(id: number) {
-    // Aquí deberías agregar confirmación y lógica de eliminación real
-    console.log('Eliminar venta', id);
-    this.snackbar.open(`Función eliminar: venta ID ${id}`, 'Cerrar', { duration: 3000 });
+  if (confirm(`¿Estás seguro de eliminar la venta ${id}?`)) {
+    this.apiventa.deleteVenta(id).subscribe(response => {
+      if (response.exito === 1) {
+        this.snackbar.open('Venta eliminada correctamente', '', { duration: 2000 });
+        this.ngOnInit(); // refrescar la lista
+      } else {
+        this.snackbar.open('Error al eliminar', '', { duration: 2000 });
+      }
+    });
   }
+}
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
+  }
+
 }
