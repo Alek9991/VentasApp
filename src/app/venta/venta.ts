@@ -17,6 +17,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { EditarVentaDialogComponent } from './dialog/editarventadialog.component';
 
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
+
 @Component({
   selector: 'app-venta',
   standalone: true,
@@ -142,5 +146,52 @@ editarVenta(id: number) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource.filter = filterValue;
   }
+
+
+
+
+  //AGREGAR LO DE DESCARGAR PDF
+  exportarCSV() {
+  const rows = this.dataSource.data.map(item => [
+    item.clienteID,
+    item.nombreCliente,
+    item.ventaID,
+    item.fechaVenta,
+    item.totalVenta
+  ]);
+  const csvContent = [
+    ['ClienteID', 'NombreCliente', 'VentaID', 'FechaVenta', 'TotalVenta'],
+    ...rows
+  ].map(e => e.join(",")).join("\n");
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ventas.csv';
+  a.click();
+}
+
+exportarPDF() {
+  const doc = new jsPDF();
+  doc.text("Reporte de Ventas", 14, 10);
+
+  const body = this.dataSource.data.map(item => [
+    item.clienteID,
+    item.nombreCliente,
+    item.ventaID,
+    item.fechaVenta,
+    `$${item.totalVenta.toFixed(2)}`
+  ]);
+
+  autoTable(doc, {
+    head: [['Cliente', 'Nombre', 'Venta', 'FechaVenta', 'TotalVenta']],
+    body: body,
+    startY: 20,
+  });
+
+  doc.save('ventas.pdf');
+}
+
 
 }
