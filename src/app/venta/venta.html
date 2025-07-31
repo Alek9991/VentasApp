@@ -72,3 +72,4 @@
 <tr mat-row *matRowDef="let row; columns: ['clienteID', 'nombreCliente', 'ventaID', 'fechaVenta', 'totalVenta', 'acciones'];"></tr>
 
 </table>
+<mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>

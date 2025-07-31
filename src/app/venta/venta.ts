@@ -14,7 +14,7 @@ import { clienteVenta } from '../models/clienteVenta';
 import { DetalleVenta } from '../models/detalleVenta';
 import { DetalleVentaDialogComponent } from './dialog/detalleventadialog';
 import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { EditarVentaDialogComponent } from './dialog/editarventadialog.component';
 
 import jsPDF from 'jspdf';
@@ -34,6 +34,7 @@ import autoTable from 'jspdf-autotable';
     MatIconModule,
     HttpClientModule,
     CommonModule,
+    MatPaginatorModule,
     
   ],
   templateUrl: './venta.html',

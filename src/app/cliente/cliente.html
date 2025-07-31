@@ -51,6 +51,7 @@
     <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
   </table>
 </div>
+<mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
 
 <!-- Spinner mientras carga -->
 <div class="loading-spinner" *ngIf="isLoading" style="text-align: center; margin-top: 1rem;">
