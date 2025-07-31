@@ -15,6 +15,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-cliente',
@@ -41,6 +43,7 @@ export class ClienteComponent implements OnInit, AfterViewInit {
   columnas: string[] = ['id', 'nombre', 'actions'];
   readonly width = '300px';
 
+  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -116,4 +119,60 @@ export class ClienteComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+getDatosVisibles(): Cliente[] {
+  const datosOrdenados = this.lst.sortData(this.lst.filteredData.slice(), this.sort!);
+  const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+  return datosOrdenados.slice(startIndex, startIndex + this.paginator.pageSize);
+}
+
+
+    //AGREGAR LO DE DESCARGAR PDF
+ exportarCSV() {
+  const paginaActual = this.getDatosVisibles();
+
+  const rows = paginaActual.map(item => [
+    item.id,
+    item.nombre,
+  ]);
+
+  const csvContent = [
+    ['ClienteID', 'NombreCliente'],
+    ...rows
+  ].map(e => e.join(",")).join("\n");
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'cliente.csv';
+  a.click();
+}
+
+
+  
+exportarPDF() {
+  const doc = new jsPDF();
+  doc.text("Reporte de Clientes", 14, 10);
+
+  const paginaActual = this.getDatosVisibles();
+
+  const body = paginaActual.map(item => [
+    item.id,
+    item.nombre,
+  ]);
+
+  autoTable(doc, {
+    head: [['Cliente', 'Nombre']],
+    body: body,
+    startY: 20,
+  });
+
+  doc.save('clientes.pdf');
+}
+
+
+  
+  
+  
 }

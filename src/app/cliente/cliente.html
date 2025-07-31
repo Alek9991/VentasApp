@@ -17,6 +17,11 @@
   <input matInput (keyup)="applyFilter($event)" placeholder="Escribe un nombre...">
 </mat-form-field>
 
+<div  style="margin: 10px 0;">
+  <button mat-raised-button style="background-color: #198d1d; color: white;" (click)="exportarCSV()">Exportar CSV</button>
+  <button mat-raised-button color="warn" (click)="exportarPDF()">Exportar PDF</button>
+</div>
+
 <!-- Tabla con scroll -->
 <div class="table-container" style="overflow-x: auto;">
   <table mat-table [dataSource]="lst" class="mat-elevation-z4" matSort>
