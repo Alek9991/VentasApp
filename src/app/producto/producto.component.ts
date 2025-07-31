@@ -37,7 +37,7 @@ import { DialogProductoComponent } from './dialog/dialogproducto.component';
 export class ProductoComponent implements OnInit {
   lst = new MatTableDataSource<Producto>();
   isLoading = false;
-  displayedColumns: string[] = ['id', 'nombre', 'precioUnitario', 'costo', 'acciones'];
+  displayedColumns: string[] = ['id', 'nombre', 'precioUnitario', 'costo', 'stock', 'acciones'];
   dataSource = new MatTableDataSource<Producto>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -81,6 +81,7 @@ export class ProductoComponent implements OnInit {
             case 'id': return item.id;
             case 'nombre': return item.nombre.toLowerCase();
             case 'precioUnitario': return item.precioUnitario;
+            case 'stock': return item.stock;
             case 'costo': return item.costo;
             default: return '';
           }

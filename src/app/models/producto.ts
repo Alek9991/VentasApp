@@ -3,5 +3,6 @@ export interface Producto {
   nombre: string;
   precioUnitario: number;
   costo: number;
+  stock: number;
   activo?: boolean;
 }
