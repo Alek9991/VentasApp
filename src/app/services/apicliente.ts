@@ -17,9 +17,10 @@ export class Apicliente {
   constructor(
     private _http: HttpClient
   ) { }
-  getClientes():Observable<Response>{
-    return this._http.get<Response>(this.url);
-  }
+  getClientes(): Observable<Response<Cliente[]>> {
+  return this._http.get<Response<Cliente[]>>(this.url);
+}
+
 
   add(cliente: Cliente):Observable<Response>{
     return this._http.post<Response>(this.url, cliente, httpOption);

@@ -1,5 +1,6 @@
-export interface Response {
+export interface Response<T = any> {
     exito: number;
     mensaje: string;
-    data: any;
+    //data: any;
+    data: T;
 }

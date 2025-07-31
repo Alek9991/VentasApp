@@ -35,12 +35,14 @@ import { DialogProductoComponent } from './dialog/dialogproducto.component';
   ]
 })
 export class ProductoComponent implements OnInit {
+  lst = new MatTableDataSource<Producto>();
   isLoading = false;
   displayedColumns: string[] = ['id', 'nombre', 'precioUnitario', 'costo', 'acciones'];
   dataSource = new MatTableDataSource<Producto>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
 
   constructor(
     private apiProducto: ApiProducto,
@@ -50,6 +52,20 @@ export class ProductoComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarProductos();
+  }
+
+
+    ngAfterViewInit() {
+    this.lst.paginator = this.paginator;
+    this.lst.sort = this.sort;
+    // Opcional: define cómo ordenar el nombre ignorando mayúsculas/minúsculas
+    this.lst.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'id': return item.id;
+        case 'nombre': return item.nombre.toLowerCase();
+        default: return '';
+      }
+    };
   }
 
   cargarProductos() {

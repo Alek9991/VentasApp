@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { FormBuilder, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Apiventa } from "../../services/apiventa";
@@ -17,20 +17,29 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { ApiProducto } from "../../services/apiproducto";
+import { MatAutocomplete } from "@angular/material/autocomplete";
+import { Cliente } from "../../models/cliente";
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Apicliente } from "../../services/apicliente";
+
 
 
 @Component({
   templateUrl: 'dialogventa.component.html',
   imports: [
-    CommonModule, 
+    CommonModule,
     MatButtonModule,
     MatSnackBarModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    MatAutocomplete,
+    MatAutocompleteModule
+]
 })
 
 export class DialogVentaComponent {
@@ -43,7 +52,8 @@ export class DialogVentaComponent {
      public apiProducto: ApiProducto,
     public snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
-    public apiVenta: Apiventa
+    public apiVenta: Apiventa,
+    private apiCliente: Apicliente
   ) {
     this.conceptos = [];
     this.venta = { idCliente: 3, conceptos: [] };
@@ -105,6 +115,44 @@ actualizarImporte() {
       }
     });
   }
+}
+
+
+// apartir de aqui se hace el buscador de clientes 
+clienteCtrl = new FormControl('');
+clientesLista: Cliente[] = []; // todos los clientes
+clientesFiltrados: Cliente[] = []; // filtrados en tiempo real
+selectedCliente: Cliente | null = null;
+
+
+
+ngOnInit() {
+  this.cargarClientes();
+  
+   this.clienteCtrl.valueChanges.subscribe(valor => {
+    this.filtrarClientes(valor || '');
+  });
+}
+
+// Simula obtener clientes desde el servicio
+cargarClientes() {
+  this.apiCliente.getClientes().subscribe(response => {
+    this.clientesLista = response.data;
+    this.clientesFiltrados = [...this.clientesLista];
+  });
+}
+
+filtrarClientes(valor: string) {
+  const filtro = valor.toLowerCase();
+  this.clientesFiltrados = this.clientesLista.filter(c =>
+    c.nombre.toLowerCase().includes(filtro) || c.id.toString().includes(filtro)
+  );
+}
+
+
+seleccionarCliente(cliente: Cliente) {
+  this.selectedCliente = cliente;
+  this.venta.idCliente = cliente.id; // asigna el ID del cliente a la venta
 }
 
 
