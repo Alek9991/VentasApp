@@ -5,4 +5,6 @@ export interface Producto {
   costo: number;
   stock: number;
   activo?: boolean;
+  categoriaId: number;       // 👈 debe existir
+  //nombreCategoria?: string;
 }

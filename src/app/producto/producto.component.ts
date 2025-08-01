@@ -4,39 +4,48 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Producto } from '../models/producto';
 import { ApiProducto } from '../services/apiproducto';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
+//import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
 import { DialogProductoComponent } from './dialog/dialogproducto.component';
-
 @Component({
   selector: 'app-producto',
   standalone: true,
   templateUrl: './producto.component.html',
   styleUrls: ['./producto.component.scss'],
   imports: [
-    CommonModule,
-    MatTableModule,
-    MatIconModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatPaginatorModule,
-    MatSortModule
-  ]
+  CommonModule,
+  MatTableModule,
+  MatIconModule,
+  MatButtonModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatOptionModule,
+  MatAutocompleteModule,
+  MatProgressSpinnerModule,
+  MatPaginatorModule,
+  MatSortModule
+],
 })
 export class ProductoComponent implements OnInit {
   lst = new MatTableDataSource<Producto>();
   isLoading = false;
+  //para gergar las categorias 
+  categorias: Categoria[] = [];
+  categoriaSeleccionada: number = 0;
+  productosOriginales: Producto[] = [];
+  //----------------------------------
   displayedColumns: string[] = ['id', 'nombre', 'precioUnitario', 'costo', 'stock', 'acciones'];
   dataSource = new MatTableDataSource<Producto>();
 
@@ -52,6 +61,7 @@ export class ProductoComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarProductos();
+  this.cargarCategorias();
   }
 
 
@@ -73,6 +83,8 @@ export class ProductoComponent implements OnInit {
   this.apiProducto.getProductos().subscribe({
     next: (response) => {
       if (response.exito === 1) {
+       this.productosOriginales = response.data;
+        //this.dataSource.data = response.data;
         this.dataSource.data = response.data;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -97,6 +109,28 @@ export class ProductoComponent implements OnInit {
       this.isLoading = false;
     }
   });
+  }
+
+  cargarCategorias() {
+    this.apiProducto.getCategorias().subscribe({
+      next: (response) => {
+        this.categorias = response.data;
+      },
+      error: () => {
+        this.snackBar.open('Error al cargar categorías', '', { duration: 2000 });
+      }
+    });
+  }
+
+
+  filtrarPorCategoria() {
+  if (this.categoriaSeleccionada === 0) {
+    this.dataSource.data = this.productosOriginales;
+  } else {
+    this.dataSource.data = this.productosOriginales.filter(
+      p => p.categoriaId === this.categoriaSeleccionada
+    );
+  }
 }
 
 

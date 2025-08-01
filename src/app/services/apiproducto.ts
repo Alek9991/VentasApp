@@ -33,6 +33,13 @@ export class ApiProducto {
   }
   getProductoPorId(id: number): Observable<Response> {
   return this._http.get<Response>(`${this.url}/${id}`);
-}
+  }
+
+  getCategorias(): Observable<any> {
+  return this._http.get(`https://localhost:44321/api/categoria`);
+  }
+
+
+
 
 }

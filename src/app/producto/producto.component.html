@@ -6,10 +6,24 @@
 
 </div>
 
+
+
+<div>
 <mat-form-field appearance="outline" class="search-field">
   <mat-label>Buscar producto</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Nombre o ID">
 </mat-form-field>
+<!--CATEGORIAS CLASIFICACION -->
+<mat-form-field appearance="outline" class="search-field">
+  <mat-label>Filtrar por categoría</mat-label>
+  <mat-select [(value)]="categoriaSeleccionada" (selectionChange)="filtrarPorCategoria()">
+    <mat-option [value]="0">Todas</mat-option>
+    <mat-option *ngFor="let c of categorias" [value]="c.id">
+      {{ c.nombre }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
 
 <!-- Tabla con scroll -->
 <div class="table-container" style="overflow-x: auto;">

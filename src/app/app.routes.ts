@@ -6,6 +6,8 @@ import { Venta } from './venta/venta';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './security/auth.guard';
 import { ProductoComponent } from './producto/producto.component';
+import { MatInputModule } from '@angular/material/input';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -14,4 +16,6 @@ export const routes: Routes = [
   { path: 'venta', component: Venta, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'producto', component: ProductoComponent, canActivate: [AuthGuard] },
+  { path: 'categoria', component: ProductoComponent, canActivate: [AuthGuard] },
+
 ];
