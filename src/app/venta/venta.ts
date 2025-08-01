@@ -54,8 +54,18 @@ export class Venta implements OnInit {
   dataSource = new MatTableDataSource<clienteVenta>([]); // ← ¡Aquí cambia!
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  
 
-  readonly width: string = '600px';
+ngAfterViewInit() {
+  this.dataSource.paginator = this.paginator;
+  this.dataSource.sort = this.sort;
+}
+
+
+  readonly width: string = '1000px';
+  readonly height: string = '600px';
+
+  // Constructor
 
   constructor(
     public apiventa: Apiventa,
@@ -149,19 +159,31 @@ editarVenta(id: number) {
   }
 
 
+getDatosVisibles(): any[] {
+  // Si tienes sort activo
+  const datosOrdenados = this.sort
+    ? this.dataSource.sortData(this.dataSource.filteredData.slice(), this.sort)
+    : this.dataSource.filteredData;
+
+  const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+  return datosOrdenados.slice(startIndex, startIndex + this.paginator.pageSize);
+}
 
 
   //AGREGAR LO DE DESCARGAR PDF
 
   
   exportarCSV() {
-  const rows = this.dataSource.data.map(item => [
+  const datosVisibles = this.getDatosVisibles();
+
+  const rows = datosVisibles.map(item => [
     item.clienteID,
     item.nombreCliente,
     item.ventaID,
     item.fechaVenta,
     item.totalVenta
   ]);
+
   const csvContent = [
     ['ClienteID', 'NombreCliente', 'VentaID', 'FechaVenta', 'TotalVenta'],
     ...rows
@@ -175,11 +197,14 @@ editarVenta(id: number) {
   a.click();
 }
 
+
 exportarPDF() {
+  const datosVisibles = this.getDatosVisibles();
+
   const doc = new jsPDF();
   doc.text("Reporte de Ventas", 14, 10);
 
-  const body = this.dataSource.data.map(item => [
+  const body = datosVisibles.map(item => [
     item.clienteID,
     item.nombreCliente,
     item.ventaID,
@@ -195,6 +220,7 @@ exportarPDF() {
 
   doc.save('ventas.pdf');
 }
+
 
 
 }
