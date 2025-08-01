@@ -4,22 +4,19 @@
 
     <!-- 🔍 Buscador de cliente -->
     <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Buscar Cliente</mat-label>
+        <mat-label>Cliente</mat-label>
         <input type="text"
                matInput
                [formControl]="clienteCtrl"
                [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="seleccionarCliente($event.option.value)">
+        <mat-autocomplete #auto="matAutocomplete"
+                  [displayWith]="displayFn"
+                  (optionSelected)="seleccionarCliente($event.option.value)">
             <mat-option *ngFor="let cliente of clientesFiltrados" [value]="cliente">
                 {{ cliente.nombre }} (ID: {{ cliente.id }})
             </mat-option>
         </mat-autocomplete>
     </mat-form-field>
-
-    <!-- 👤 Mostrar cliente seleccionado -->
-    <div *ngIf="selectedCliente">
-        <p><strong>Cliente seleccionado:</strong> {{ selectedCliente.nombre }} (ID: {{ selectedCliente.id }})</p>
-    </div>
 
     <!-- Campo original de ID cliente (puede ocultarse si ya se selecciona por autocomplete) -->
     <mat-form-field>
@@ -29,20 +26,35 @@
 
     <!-- 📦 Formulario de conceptos -->
     <form [formGroup]="conceptoForm" (ngSubmit)="addConcepto()">
+
+        <!-- 🔍 Buscador de producto -->
+<mat-form-field appearance="fill" class="full-width">
+  <mat-label>Buscar Producto</mat-label>
+  <input type="text"
+         matInput
+         [formControl]="productoCtrl"
+         [matAutocomplete]="autoProducto">
+  <mat-autocomplete #autoProducto="matAutocomplete"
+                    [displayWith]="displayProducto"
+                    (optionSelected)="seleccionarProducto($event.option.value)">
+    <mat-option *ngFor="let producto of productosFiltrados" [value]="producto">
+      {{ producto.nombre }} (ID: {{ producto.id }})
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
         <mat-form-field>
-            <mat-label>Producto</mat-label>
-            <input type="text" formControlName="idProducto" matInput>
+        <mat-label>Cantidad</mat-label>
+        <input type="number" formControlName="cantidad" matInput placeholder="Cantidad">
         </mat-form-field>
 
         <mat-form-field>
-            <mat-label>Cantidad</mat-label>
-            <input type="text" formControlName="cantidad" matInput placeholder="Cantidad" value="1">
+        <mat-label>Importe</mat-label>
+        <input type="text" formControlName="importe" matInput placeholder="Importe" [disabled]="true">
         </mat-form-field>
 
-        <mat-form-field>
-            <mat-label>Importe</mat-label>
-            <input type="text" formControlName="importe" matInput placeholder="Importe" value="50">
-        </mat-form-field>
+
+
 
         <div>
             <button type="submit" [disabled]="!conceptoForm.valid" mat-raised-button>+</button>
@@ -51,18 +63,35 @@
 
     <!-- 📋 Tabla de conceptos -->
     <div>
-        <h5>Conceptos</h5>
-        <table style="width: 100%;">
-            <tr>
-                <th>Cantidad</th>
-                <th>Importe</th>
-            </tr>
-            <tr *ngFor="let item of conceptos">
-                <td>{{ item.cantidad }}</td>
-                <td>{{ item.importe }}</td>
-            </tr>
-        </table>
-    </div>
+  <h5>Conceptos</h5>
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Cantidad</th>
+        <th>Precio Unitario</th>
+        <th>Importe</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    
+    <tbody style="text-align: center;">
+  <tr *ngFor="let item of conceptos; let i = index">
+    <td>{{ obtenerNombreProducto(item.idProducto) }}</td>
+    <td>{{ item.cantidad }}</td>
+    <td>{{ item.precioUnitario }}</td>
+    <td>{{ item.importe }}</td>
+    <td>
+      <button mat-icon-button color="warn" (click)="eliminarConcepto(i)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </tr>
+</tbody>
+
+  </table>
+</div>
+
 </div>
 
 <!-- 🔘 Botones de acción -->

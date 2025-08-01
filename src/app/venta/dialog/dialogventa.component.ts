@@ -14,16 +14,15 @@ import { CommonModule } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { ApiProducto } from "../../services/apiproducto";
 import { MatAutocomplete } from "@angular/material/autocomplete";
 import { Cliente } from "../../models/cliente";
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Apicliente } from "../../services/apicliente";
-
+import { Producto } from "../../models/producto";
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -38,6 +37,7 @@ import { Apicliente } from "../../services/apicliente";
     MatSelectModule,
     ReactiveFormsModule,
     MatAutocomplete,
+    MatIconModule,
     MatAutocompleteModule
 ]
 })
@@ -46,6 +46,7 @@ export class DialogVentaComponent {
   public venta: Venta;
   public conceptos: Concepto[];
   public conceptoForm!: any;
+  
 
   constructor(
     public dialogRef: MatDialogRef<DialogVentaComponent>,
@@ -56,7 +57,7 @@ export class DialogVentaComponent {
     private apiCliente: Apicliente
   ) {
     this.conceptos = [];
-    this.venta = { idCliente: 3, conceptos: [] };
+    this.venta = { idCliente: 0, conceptos: [] };
 
     this.conceptoForm = this.formBuilder.nonNullable.group({
       cantidad: [0, Validators.required],
@@ -69,54 +70,69 @@ export class DialogVentaComponent {
     this.dialogRef.close();
   }
 
-  addConcepto() {
-    if (this.conceptoForm.valid) {
-      this.conceptos.push(this.conceptoForm.value as Concepto);
-    }
+ addConcepto() {
+  if (!this.conceptoForm.valid || !this.selectedProducto) {
+    this.snackBar.open('Completa los campos y selecciona un producto', '', { duration: 2000 });
+    return;
   }
+  if (!this.selectedCliente || this.selectedCliente.id === 0) {
+    this.snackBar.open('Selecciona un cliente válido', '', { duration: 2000 });
+    return;
+  }
+
+  const cantidad = this.conceptoForm.get('cantidad')?.value;
+  const precioUnitario = this.selectedProducto.costo;
+  const importe = cantidad * precioUnitario;
+
+  const concepto: Concepto = {
+    idProducto: this.selectedProducto.id,
+    cantidad,
+    precioUnitario,
+    importe
+  };
+
+  this.conceptos.push(concepto);
+
+  // Limpiar formulario y selección
+  this.conceptoForm.reset({ cantidad: 1, importe: 0 });
+  this.selectedProducto = null;
+  this.productoCtrl.setValue(null);
+}
+
 
   addVenta() {
   this.venta.conceptos = this.conceptos;
 
+  console.log('Venta a guardar:', this.venta);
+
   this.apiVenta.add(this.venta).subscribe(response => {
-    console.log('Respuesta recibida:', response);
-
-    if (response.exito == 1) { // Usa '==' si puede venir como string
+    if (response.exito == 1) {
       this.snackBar.open('Venta hecha con éxito', '', { duration: 2000 });
-
-      // Da un breve tiempo antes de cerrar el diálogo
-      setTimeout(() => {
-        this.dialogRef.close();
-      }, 200);
+      setTimeout(() => this.dialogRef.close(), 200);
     }
   });
 }
+
+
 actualizarImporte() {
-  const idProducto = this.conceptoForm.get('idProducto')?.value;
+  if (!this.selectedProducto) return;
 
-  if (idProducto) {
-    this.apiProducto.getProductoPorId(idProducto).subscribe({
-      next: (response) => {
-        if (response.exito === 1 && response.data) {
-          const cantidad = this.conceptoForm.get('cantidad')?.value || 0;
-          const precioUnitario = response.data.precioUnitario;
+  const cantidad = this.conceptoForm.get('cantidad')?.value || 0;
+  const precioUnitario = this.selectedProducto.costo;
+  const importe = cantidad * precioUnitario;
 
-          this.conceptoForm.patchValue({
-            precioUnitario: precioUnitario,
-            importe: cantidad * precioUnitario
-          });
-        } else {
-          this.snackBar.open('Producto no encontrado', '', { duration: 2000 });
-        }
-      },
-      error: (error) => {
-        console.error(error);
-        this.snackBar.open('Error al obtener el producto', '', { duration: 2000 });
-      }
-    });
-  }
+  this.conceptoForm.patchValue({ importe });
 }
 
+obtenerNombreProducto(id: number): string {
+  const producto = this.productosLista.find(p => p.id === id);
+  return producto ? producto.nombre : 'Desconocido';
+}
+
+
+displayFn(cliente: any): string {
+  return cliente ? cliente.nombre : '';
+}
 
 // apartir de aqui se hace el buscador de clientes 
 clienteCtrl = new FormControl('');
@@ -124,15 +140,30 @@ clientesLista: Cliente[] = []; // todos los clientes
 clientesFiltrados: Cliente[] = []; // filtrados en tiempo real
 selectedCliente: Cliente | null = null;
 
-
-
 ngOnInit() {
   this.cargarClientes();
-  
-   this.clienteCtrl.valueChanges.subscribe(valor => {
+  this.cargarProductos();
+
+  this.clienteCtrl.valueChanges.subscribe(valor => {
     this.filtrarClientes(valor || '');
   });
+
+  this.productoCtrl.valueChanges.subscribe(valor => {
+    this.filtrarProductos(valor || '');
+  });
+
+  this.conceptoForm = this.formBuilder.group({
+    cantidad: [1, [Validators.required, Validators.min(1)]],
+    importe: [{ value: 0, disabled: true }],
+  });
+
+  // Recalcular importe cuando cambia cantidad
+  this.conceptoForm.get('cantidad')?.valueChanges.subscribe(() => {
+  this.actualizarImporte();
+});
+
 }
+
 
 // Simula obtener clientes desde el servicio
 cargarClientes() {
@@ -142,6 +173,10 @@ cargarClientes() {
   });
 }
 
+eliminarConcepto(index: number): void {
+  this.conceptos.splice(index, 1);
+}
+
 filtrarClientes(valor: string) {
   const filtro = valor.toLowerCase();
   this.clientesFiltrados = this.clientesLista.filter(c =>
@@ -149,11 +184,43 @@ filtrarClientes(valor: string) {
   );
 }
 
-
 seleccionarCliente(cliente: Cliente) {
   this.selectedCliente = cliente;
   this.venta.idCliente = cliente.id; // asigna el ID del cliente a la venta
 }
+
+// apartir de aqui se hace el buscador de productos //////////////
+productoCtrl = new FormControl('');
+productosLista: Producto[] = []; // todos los productos
+productosFiltrados: Producto[] = []; // filtrados en tiempo real
+selectedProducto: Producto | null = null;
+
+cargarProductos() {
+  this.apiProducto.getProductos().subscribe(response => {
+    this.productosLista = response.data;
+    this.productosFiltrados = [...this.productosLista];
+  });
+}
+
+filtrarProductos(valor: string) {
+  const filtro = valor.toLowerCase();
+  this.productosFiltrados = this.productosLista.filter(p =>
+    p.nombre.toLowerCase().includes(filtro) || p.id.toString().includes(filtro)
+  );
+}
+
+seleccionarProducto(producto: Producto) {
+  this.selectedProducto = producto;
+  this.actualizarImporte(); // recalcula usando cantidad actual
+}
+
+
+
+
+displayProducto(producto: Producto): string {
+  return producto ? producto.nombre : '';
+}
+
 
 
 }
