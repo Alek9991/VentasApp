@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+/*import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -197,4 +197,65 @@ nuevoProducto() {
   }
 }
 
+}*/
+import { AfterViewInit, Component } from '@angular/core';
+import { ApiProducto } from '../services/apiproducto';
+import { Producto } from '../models/producto';
+import { CommonModule } from '@angular/common';
+declare var $: any;
+
+@Component({
+  selector: 'app-producto',
+  templateUrl: './producto.component.html',
+   imports: [CommonModule],
+})
+export class ProductoComponent implements AfterViewInit {
+  dataSource: Producto[] = [];
+
+  constructor(private apiProducto: ApiProducto) {}
+
+  ngAfterViewInit(): void {
+    this.apiProducto.getProductos().subscribe((datos) => {
+      this.dataSource = datos.data;
+
+      // Esperamos a que Angular renderice
+      setTimeout(() => {
+        $('#tablaProductos').DataTable({
+          responsive: true,
+          paging: true,
+          searching: true,
+          ordering: true,
+          language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-MX.json'
+          }
+        });
+      }, 100);
+    });
+  }
+
+  eliminar(id: number) {
+    if (confirm('¿Estás seguro de eliminar este producto?')) {
+      this.apiProducto.eliminarProducto(id).subscribe(() => {
+        this.dataSource = this.dataSource.filter((item) => item.id !== id);
+
+        // Vuelve a reinicializar la tabla
+        const table = $('#tablaProductos').DataTable();
+        table.clear().destroy();
+
+        setTimeout(() => {
+          $('#tablaProductos').DataTable({
+            responsive: true,
+            language: {
+              url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-MX.json'
+            }
+          });
+        }, 0);
+      });
+    }
+  }
+
+  editar(id: number) {
+    alert('Funcionalidad en desarrollo');
+  }
 }
+
