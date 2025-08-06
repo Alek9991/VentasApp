@@ -7,8 +7,8 @@ import { MatLabel } from "@angular/material/input";
 import{FormsModule} from '@angular/forms'; // Asegúrate de importar FormsModule si usas [(ngModel)]
 import { Router } from "@angular/router";
 import { FormGroup, FormControl , FormBuilder} from "@angular/forms";
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-
 @Component({
   selector: 'app-login',
   imports: [
@@ -17,7 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatInput,
     MatLabel,
     FormsModule, // Asegúrate de importar FormsModule si usas [(ngModel)]
-    ReactiveFormsModule,
+    CommonModule, ReactiveFormsModule
    
   ],
   standalone: true,
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     }
 
     login() {
-      console.log('Inicio de sesión enviado:', this.loginForm.value);
+     // console.log('Inicio de sesión enviado:', this.loginForm.value);
       // estamos instacionado en dos variables 
       const email = this.loginForm.value.email ?? '';
       const password = this.loginForm.value.password ?? '';

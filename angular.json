@@ -24,31 +24,22 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-               "src/favicon.ico",
-               "src/assets",
+              "src/favicon.ico",
+              "src/assets",
               {
                 "glob": "**/*",
                 "input": "public",
                 "output": "/"
               }
-             
             ],
             "styles": [
-            "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-            "src/styles.scss",
-
-            "node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css",
-             "node_modules/bootstrap/dist/css/bootstrap.min.css",
-            "node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css",
-            "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-            "src/assets/admin-lte/css/adminlte.css"  
-          ],
-          
-          "scripts": [
-           "node_modules/jquery/dist/jquery.min.js",
-            "node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js"
-          ]
-
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.scss",
+              "node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "src/assets/admin-lte/css/adminlte.css"
+            ]
           },
           "configurations": {
             "production": {
@@ -105,21 +96,14 @@
               }
             ],
             "styles": [
-            "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-            "src/styles.scss",
-
-            "node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css",
-             "node_modules/bootstrap/dist/css/bootstrap.min.css",
-            "node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css",
-            "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-            "src/assets/admin-lte/css/adminlte.css"  
-          ],
-            "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-            "node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js"
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.scss",
+              "node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "src/assets/admin-lte/css/adminlte.css"
             ]
-
-
+        
           }
         }
       }
