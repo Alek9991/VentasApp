@@ -13,3 +13,71 @@
 .table-container {
   overflow-x: auto;
 }
+
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1976d2; /* Azul Material */
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.header-title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filters-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-field {
+  width: 100%;
+  max-width: 400px;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.btn-export-csv {
+  background-color: #2e7d32; /* Verde Material */
+  color: white;
+}
+
+.btn-export-pdf {
+  background-color: #d32f2f; /* Rojo Material */
+  color: white;
+}
+
+.table-container {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.mat-header-cell {
+  background-color: #e3f2fd; /* Azul claro */
+  font-weight: bold;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+

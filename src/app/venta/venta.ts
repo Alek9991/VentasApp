@@ -19,6 +19,9 @@ import { EditarVentaDialogComponent } from './dialog/editarventadialog.component
 
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+
 
 
 @Component({
@@ -26,6 +29,7 @@ import autoTable from 'jspdf-autotable';
   standalone: true,
   imports: [
     MatButton,
+    MatSortModule,
     MatButtonModule,
     MatTableModule,
     MatDialogModule,
@@ -35,31 +39,43 @@ import autoTable from 'jspdf-autotable';
     HttpClientModule,
     CommonModule,
     MatPaginatorModule,
-    
-  ],
+    MatProgressSpinnerModule
+],
   templateUrl: './venta.html',
   styleUrl: './venta.scss'
 })
 export class Venta implements OnInit {
-  public columnas: string[] = [
-    'clienteID',
-    'nombreCliente',
-    'ventaID',
-    'fechaVenta',
-    'totalVenta',
-    'acciones'
-  ];
+  // public columnas: string[] = [
+  //   'clienteID',
+  //   'nombreCliente',
+  //   'ventaID',
+  //   'fechaVenta',
+  //   'totalVenta',
+  //   'acciones'
+  // ];
+
+  columnas: string[] = ['clienteID', 'nombreCliente', 'ventaID', 'fechaVenta', 'totalVenta', 'acciones'];
+
 
   public ventas: clienteVenta[] = [];
   dataSource = new MatTableDataSource<clienteVenta>([]); // ← ¡Aquí cambia!
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+isLoading: any;
 
-ngAfterViewInit() {
+  ngAfterViewInit() {
   this.dataSource.paginator = this.paginator;
   this.dataSource.sort = this.sort;
+
+  this.dataSource.sortingDataAccessor = (item, property) => {
+    switch (property) {
+      case 'nombreCliente': return item.nombreCliente?.toLowerCase();
+      case 'fechaVenta': return new Date(item.fechaVenta);
+      default: return (item as any)[property];
+    }
+  };
 }
+
 
 
   readonly width: string = '1000px';
@@ -74,25 +90,16 @@ ngAfterViewInit() {
   ) {}
 
   
-ngOnInit(): void {
-  this.apiventa.getClientesConVentas().subscribe(data => {
-    this.ventas = data;  // ← Agrega esta línea
-    this.dataSource.data = data;
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.dataSource.sortingDataAccessor = (item, property) => {
-      switch (property) {
-        case 'nombreCliente': return item.nombreCliente.toLowerCase();
-        case 'clienteID': return item.clienteID;
-        case 'ventaID': return item.ventaID;
-        case 'fechaVenta': return item.fechaVenta;
-        case 'totalVenta': return item.totalVenta;
-        default: return '';
-      }
-    };
-  });
-}
+ 
 
+  ngOnInit(): void {
+    this.apiventa.getClientesConVentas().subscribe(data => {
+      this.ventas = data;
+      this.dataSource.data = data;
+
+      // Ya no pongas paginator y sort aquí si ya los pones en ngAfterViewInit
+    });
+  }
   openAdd() {
     const dialogRef = this.dialog.open(DialogVentaComponent, {
       width: this.width
