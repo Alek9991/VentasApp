@@ -17,6 +17,18 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import {
+  Chart,
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
+
 
 @Component({
   selector: 'app-cliente',
@@ -55,6 +67,8 @@ export class ClienteComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.getClientes();
+    this.initChart(); // 👈 Agrega esta línea
+
   }
 
   ngAfterViewInit() {
@@ -76,6 +90,8 @@ export class ClienteComponent implements OnInit, AfterViewInit {
       next: (response) => {
         this.lst.data = response.data;
         this.isLoading = false;
+        this.updateChartData(); // esto es para el chart
+
       },
       error: (err) => {
         console.error('Error al cargar clientes:', err);
@@ -172,7 +188,89 @@ exportarPDF() {
 }
 
 
-  
+  //CHART
+  lineChart!: Chart;
+
+initChart() {
+  Chart.register(
+    LineController,
+    LineElement,
+    PointElement,
+    LinearScale,
+    CategoryScale,
+    Title,
+    Tooltip,
+    Legend
+  );
+
+  const canvas = document.getElementById('lineChart') as HTMLCanvasElement;
+
+  if (canvas) {
+    this.lineChart = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: [], // Se llenará luego con nombres o meses
+        datasets: [{
+          label: 'Clientes',
+          data: [],
+          borderColor: 'rgba(75,192,192,1)',
+          fill: false,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Clientes por nombre'
+          }
+        },
+        scales: {
+          x: {
+            type: 'category',
+            title: {
+              display: true,
+              text: 'Cliente'
+            }
+          },
+          y: {
+            type: 'linear',
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Cantidad'
+            }
+          }
+        }
+      }
+    });
+  }
+}
+
+updateChartData() {
+  const clientes = this.lst.filteredData;
+
+  const conteoPorNombre: { [nombre: string]: number } = {};
+
+  clientes.forEach(cliente => {
+    if (conteoPorNombre[cliente.nombre]) {
+      conteoPorNombre[cliente.nombre]++;
+    } else {
+      conteoPorNombre[cliente.nombre] = 1;
+    }
+  });
+
+  const labels = Object.keys(conteoPorNombre);
+  const data = Object.values(conteoPorNombre);
+
+  if (this.lineChart) {
+    this.lineChart.data.labels = labels;
+    this.lineChart.data.datasets[0].data = data;
+    this.lineChart.update();
+  }
+}
+
   
   
 }
