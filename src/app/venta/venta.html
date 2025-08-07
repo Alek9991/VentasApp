@@ -1,17 +1,32 @@
 <!-- Cabecera con título y botón -->
 <div class="header-container">
   <h1 class="header-title">🧾 Ventas</h1>
-  <button mat-raised-button color="primary" (click)="openAdd()">
-    <mat-icon>add</mat-icon> Nueva venta
-  </button>
+  
 </div>
 
 <!-- Filtros -->
-<div class="filters-container">
+<!-- <div class="filters-container">
   <mat-form-field appearance="outline" class="filter-field">
     <mat-label>Buscar venta</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Nombre o ID de cliente" />
   </mat-form-field>
+</div> -->
+
+<div class="filters-container" >
+  <mat-form-field appearance="outline" class="filter-field" style="width: 100%; max-width: 400px;">
+    <mat-icon matPrefix>search</mat-icon>
+    <mat-label>Buscar clientes</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Escribe un nombre..."
+      style="padding-left: 8px;"
+    />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="openAdd()">
+    <mat-icon>add</mat-icon> Nueva venta
+  </button>
 </div>
 
 <!-- Botones de exportación -->

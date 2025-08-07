@@ -9,12 +9,26 @@
 </div>
 
 <!-- 🔍 Buscador -->
-<div class="filters-container">
+<!-- <div class="filters-container">
   <mat-form-field appearance="outline" class="filter-field" style="flex: 1;">
     <mat-label>Buscar clientes</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Escribe un nombre...">
   </mat-form-field>
+</div> -->
+
+<div class="filters-container" >
+  <mat-form-field appearance="outline" class="filter-field" style="width: 100%; max-width: 400px;">
+    <mat-icon matPrefix>search</mat-icon>
+    <mat-label>Buscar clientes</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Escribe un nombre..."
+      style="padding-left: 8px;"
+    />
+  </mat-form-field>
 </div>
+
 
 <!-- 📤 Botones de exportación -->
 <div class="export-buttons d-flex gap-2 mb-3">

@@ -38,6 +38,14 @@ mat-spinner {
   margin-bottom: 1.5rem;
 }
 
+.botonadd{
+  display: flex;
+  margin-left: 86%;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+
+}
 .header-title {
   font-size: 1.8rem;
   font-weight: 500;
@@ -45,10 +53,20 @@ mat-spinner {
 }
 
 .filters-container {
+ 
   display: flex;
+  
   gap: 1rem;
   margin-bottom: 1rem;
   flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ 
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
 }
 
 .filter-field {

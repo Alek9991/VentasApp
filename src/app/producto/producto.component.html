@@ -8,9 +8,20 @@
 
 <!-- Filtros -->
 <div class="filters-container">
-  <mat-form-field appearance="outline" class="filter-field">
+  <!-- <mat-form-field appearance="outline" class="filter-field">
     <mat-label>Buscar producto</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Nombre o ID" />
+  </mat-form-field> -->
+
+  <mat-form-field appearance="outline" class="filter-field" style="width: 100%; max-width: 400px;">
+    <mat-icon matPrefix>search</mat-icon>
+    <mat-label>Buscar clientes</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Escribe un nombre..."
+      style="padding-left: 8px;"
+    />
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="filter-field">
