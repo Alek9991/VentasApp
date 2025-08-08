@@ -13,9 +13,9 @@ import { ReactiveFormsModule } from '@angular/forms';
   selector: 'app-login',
   imports: [
     MatCardModule,
-    MatFormField,
-    MatInput,
-    MatLabel,
+    // MatFormField,
+    // MatInput,
+    // MatLabel,
     FormsModule, // Asegúrate de importar FormsModule si usas [(ngModel)]
     CommonModule, ReactiveFormsModule
    

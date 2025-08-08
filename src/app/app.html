@@ -151,3 +151,92 @@
 
 
 
+
+
+
+
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!-- AdminLTE -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+
+<!-- Scripts necesarios -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Logo o título -->
+  <a href="#" class="brand-link">
+    <i class="fas fa-cogs brand-image img-circle elevation-3"></i>
+    <span class="brand-text font-weight-light">Mi Panel</span>
+  </a>
+
+
+  
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Menú de navegación -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column"
+          data-widget="treeview"
+          role="menu"
+          data-accordion="false">
+
+        <!-- Menú con subelementos -->
+        <li class="nav-item has-treeview menu-open">
+          <a href="#" class="nav-link active">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Dashboard
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="./index.html" class="nav-link active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Dashboard v1</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="./index2.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Dashboard v2</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Otro ítem -->
+        <li class="nav-item">
+          <a mat-list-item routerLink="/cliente" routerLinkActive="active-link">
+      <mat-icon>person</mat-icon>
+      <span>Cliente</span>
+    </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="./ventas.html" class="nav-link">
+            <i class="nav-icon fas fa-shopping-cart"></i>
+            <p>Ventas</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="./logout.html" class="nav-link">
+            <i class="nav-icon fas fa-sign-out-alt"></i>
+            <p>Cerrar sesión</p>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+  </div>
+</aside>
+
