@@ -1,7 +1,7 @@
 <!-- <mat-drawer-container class="global-content" autosize> -->
 
   <!-- Menú lateral -->
-  <!-- <mat-drawer #drawer mode="side" class="side-nav" opened>
+   <!-- <mat-drawer #drawer mode="side" class="side-nav" opened>
     <mat-nav-list>
 
       <a mat-list-item routerLink="/home" routerLinkActive="active-link">
@@ -29,7 +29,7 @@
       </a>
 
     </mat-nav-list>
-  </mat-drawer> -->
+  </mat-drawer>  -->
 
   <!-- Contenido principal -->
   <!-- <mat-drawer-content class="main-content">
@@ -40,112 +40,77 @@
     <router-outlet></router-outlet>
   </mat-drawer-content>
 
-</mat-drawer-container> -->
+</mat-drawer-container> --> 
 
-<!-- Dashboard Layout -->
-<mat-drawer-container class="global-content" autosize>
-
-  <!-- Menú lateral -->
-  <mat-drawer #drawer mode="side" class="side-nav bg-dark" opened>
-  <mat-toolbar color="primary">Menú</mat-toolbar>
-
-  <mat-nav-list>
-    <a mat-list-item routerLink="/home" routerLinkActive="active-link">
-      <mat-icon>home</mat-icon>
-      <span>Inicio</span>
-    </a>
-
-    <a mat-list-item routerLink="/cliente" routerLinkActive="active-link">
-      <mat-icon>person</mat-icon>
-      <span>Cliente</span>
-    </a>
-
-    <a mat-list-item routerLink="/venta" routerLinkActive="active-link">
-      <mat-icon>shopping_cart</mat-icon>
-      <span>Venta</span>
-    </a>
-
-    <a mat-list-item routerLink="/producto" routerLinkActive="active-link">
-      <mat-icon>inventory_2</mat-icon>
-      <span>Producto</span>
-    </a>
-
-    <a mat-list-item (click)="logout()" *ngIf="usuario">
-      <mat-icon>logout</mat-icon>
-      <span>Cerrar sesión</span>
-    </a>
-  </mat-nav-list>
-
-  </mat-drawer>
-
-  <!-- Contenido principal -->
-  <mat-drawer-content class="main-content">
-
-    <!-- Topbar -->
-    <mat-toolbar color="white" class="shadow-sm px-4 topbar">
-      <button mat-icon-button (click)="drawer.toggle()" class="d-md-none">
-        <mat-icon>menu</mat-icon>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" [routerLink]="'/dashboard'">Admin</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
       </button>
-
-      <span class="topbar-title">Dashboard</span>
-      <span class="flex-grow-1"></span>
-
-      <button mat-icon-button class="position-relative me-2">
-        <mat-icon>notifications</mat-icon>
-        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">3</span>
-      </button>
-
-      <button mat-icon-button class="position-relative me-2">
-        <mat-icon>mail</mat-icon>
-        <span class="badge bg-warning position-absolute top-0 start-100 translate-middle">15</span>
-      </button>
-
-      <img src="https://i.pravatar.cc/40" class="rounded-circle" width="40" alt="avatar">
-    </mat-toolbar>
-
-    <!-- Dashboard contenido -->
-    <!-- <div class="container mt-4">
-      <div class="row g-3">
-        <div class="col-md-3">
-          <mat-card class="text-white bg-primary p-3">
-            <h3>150</h3>
-            <p>New Orders</p>
-            <mat-icon class="fs-1">shopping_cart</mat-icon>
-            <div><a href="#" class="text-white">More info <mat-icon>open_in_new</mat-icon></a></div>
-          </mat-card>
-        </div>
-        <div class="col-md-3">
-          <mat-card class="text-white bg-success p-3">
-            <h3>53%</h3>
-            <p>Bounce Rate</p>
-            <mat-icon class="fs-1">bar_chart</mat-icon>
-            <div><a href="#" class="text-white">More info <mat-icon>open_in_new</mat-icon></a></div>
-          </mat-card>
-        </div>
-        <div class="col-md-3">
-          <mat-card class="text-dark bg-warning p-3">
-            <h3>44</h3>
-            <p>User Registrations</p>
-            <mat-icon class="fs-1">person_add</mat-icon>
-            <div><a href="#" class="text-dark">More info <mat-icon>open_in_new</mat-icon></a></div>
-          </mat-card>
-        </div>
-        <div class="col-md-3">
-          <mat-card class="text-white bg-danger p-3">
-            <h3>65</h3>
-            <p>Unique Visitors</p>
-            <mat-icon class="fs-1">pie_chart</mat-icon>
-            <div><a href="#" class="text-white">More info <mat-icon>open_in_new</mat-icon></a></div>
-          </mat-card>
-        </div>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/dashboard'">Profile</a>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-outline-danger ms-3" (click)="logout()">Logout</button>
+          </li>
+        </ul>
       </div>
+    </div>
+  </nav>
+  
 
-      <!-- Aquí se inyectarán los componentes 
-      
-    </div> -->
-    <router-outlet></router-outlet>
+<mat-drawer-container class="global-content" autosize>
+  <mat-drawer #drawer mode="side" class="side-nav" opened>
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-primary text-white" style="width: 250px; height: 100vh;">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <span class="fs-4">Admin Panel</span>
+      </a>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a  routerLink="/cliente" routerLinkActive="active-link" class="nav-link text-white">
+            <mat-icon>person</mat-icon>
+            <span>Cliente</span>
+          </a>
+        </li>
+        <li>
+          <a  routerLink="/venta" routerLinkActive="active-link" class="nav-link text-white">
+            <mat-icon>shopping_cart</mat-icon>
+            <span>Venta</span>
+          </a>
+        </li>
+        <li>
+          <a  routerLink="/producto" routerLinkActive="active-link" class="nav-link text-white">
+            <mat-icon>shopping_cart</mat-icon>
+            <span>Producto</span>
+          </a>
+        </li>
+        <li>
+          <a mat-list-item (click)="logout()" *ngIf="usuario" class="nav-link text-white">
+            <mat-icon>logout</mat-icon>
+            <span>Cerrar sesión</span>
+          </a>
+        </li>
+      </ul>
+      <hr>
+      <div class="text-center">
+        <button class="btn btn-outline-light btn-sm w-100" (click)="toggleDarkMode()">Toggle Dark Mode</button>
+      </div>
+      </div>
+  </mat-drawer>
+    
+      <mat-drawer-content class="main-content">
+        <button mat-icon-button (click)="drawer.toggle()" class="toggle-button">
+          <mat-icon>menu</mat-icon>
+        </button>
 
-  </mat-drawer-content>
+        <router-outlet></router-outlet>
+      </mat-drawer-content>
+
+
 
 </mat-drawer-container>
 
@@ -156,87 +121,4 @@
 
 
 
-<!-- Bootstrap -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-<!-- FontAwesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<!-- AdminLTE -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
-
-<!-- Scripts necesarios -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-
-
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-  <!-- Logo o título -->
-  <a href="#" class="brand-link">
-    <i class="fas fa-cogs brand-image img-circle elevation-3"></i>
-    <span class="brand-text font-weight-light">Mi Panel</span>
-  </a>
-
-
-  
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <!-- Menú de navegación -->
-    <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column"
-          data-widget="treeview"
-          role="menu"
-          data-accordion="false">
-
-        <!-- Menú con subelementos -->
-        <li class="nav-item has-treeview menu-open">
-          <a href="#" class="nav-link active">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-              Dashboard
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="./index.html" class="nav-link active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard v1</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./index2.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard v2</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <!-- Otro ítem -->
-        <li class="nav-item">
-          <a mat-list-item routerLink="/cliente" routerLinkActive="active-link">
-      <mat-icon>person</mat-icon>
-      <span>Cliente</span>
-    </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="./ventas.html" class="nav-link">
-            <i class="nav-icon fas fa-shopping-cart"></i>
-            <p>Ventas</p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="./logout.html" class="nav-link">
-            <i class="nav-icon fas fa-sign-out-alt"></i>
-            <p>Cerrar sesión</p>
-          </a>
-        </li>
-
-      </ul>
-    </nav>
-  </div>
-</aside>
 

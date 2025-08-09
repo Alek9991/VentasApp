@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import {
@@ -11,72 +12,52 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
+import { ChartComponent, ApexChart, ApexAxisChartSeries, ApexXAxis } from 'ng-apexcharts';
+
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [CommonModule, ChartComponent],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
 export class Home implements AfterViewInit {
-
   ngAfterViewInit(): void {
-    // 👇 Registra los componentes necesarios
-    Chart.register(
-      LineController,
-      LineElement,
-      PointElement,
-      LinearScale,
-      CategoryScale,
-      Title,
-      Tooltip,
-      Legend
-    );
-
-    const canvas = document.getElementById('lineChart') as HTMLCanvasElement;
-
-    if (canvas) {
-      new Chart(canvas, {
-        type: 'line',
-        data: {
-          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
-          datasets: [{
-            label: 'Ventas',
-            data: [15, 30, 20, 45, 25],
-            borderColor: 'rgba(75,192,192,1)',
-            tension: 0.4,
-            fill: false
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              display: true
-            },
-            title: {
-              display: true,
-              text: 'Gráfico de Ventas'
-            }
-          },
-          scales: {
-            x: {
-              type: 'category',
-              title: {
-                display: true,
-                text: 'Meses'
-              }
-            },
-            y: {
-              type: 'linear',
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: 'Valor'
-              }
-            }
-          }
-        }
-      });
-    }
+    throw new Error('Method not implemented.');
   }
+
+  users = [
+    { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin' },
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'Editor' }
+  ];
+  chartOptions: ApexChart = {
+    type: 'bar',
+    height: 350
+  };
+
+  chartSeries: ApexAxisChartSeries = [
+    {
+      name: 'Sales',
+      data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+    }
+  ];
+
+  xAxis: ApexXAxis = {
+    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
+  };
+  lineChart = {
+    series: [
+      {
+        name: "Sales",
+        data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+      }
+    ],
+   
+    xaxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
+    }
+  };
+  chart:  ApexChart = {
+    type: 'line',
+    height: 350
+  };
 }

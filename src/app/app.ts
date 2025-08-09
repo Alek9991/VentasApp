@@ -49,6 +49,9 @@ export class App {
    title = 'app';
    usuario: Usuario | null = null;
 
+   isDarkMode: boolean = false;
+
+
 
 constructor(public apiauthService: ApiAuthService,
                     private router: Router 
@@ -63,5 +66,11 @@ constructor(public apiauthService: ApiAuthService,
   logout(){
     this.apiauthService.logout();
     this.router.navigate(['/login']); 
+  }
+
+
+   toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+    document.body.classList.toggle('dark-mode', this.isDarkMode);
   }
 }

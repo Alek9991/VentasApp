@@ -18,4 +18,8 @@ export const routes: Routes = [
   { path: 'producto', component: ProductoComponent, canActivate: [AuthGuard] },
   { path: 'categoria', component: ProductoComponent, canActivate: [AuthGuard] },
 
+ 
+
 ];
+
+
