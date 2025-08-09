@@ -1,9 +1,17 @@
-<!-- <mat-drawer-container class="global-content" autosize> -->
+<style>
+  /* Que la barra superior no se mueva al hacer scroll */
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
 
-  <!-- Menú lateral -->
-   <!-- <mat-drawer #drawer mode="side" class="side-nav" opened>
-    <mat-nav-list>
+  /* Ajusta el área principal para que el contenido no quede pegado */
+  .main-content {
+    padding: 0;
+  }
 
+<<<<<<< HEAD
       <a mat-list-item routerLink="/home" routerLinkActive="active-link">
         <mat-icon>home</mat-icon>
         <span>Inicio</span>
@@ -48,31 +56,44 @@
 <mat-drawer-container class="global-content" autosize>
   <mat-drawer #drawer mode="side" class="side-nav" opened>
     <!--<div class="d-flex flex-column flex-shrink-0 p-3 bg-primary text-white" style="width: 250px; height: 100vh;">-->
+=======
+  /* Ajustar el alto del contenedor global */
+  .global-content {
+    height: 100vh;
+  }
+</style>
+
+<mat-drawer-container class="global-content" autosize>
+
+  <!-- Sidebar -->
+  <mat-drawer #drawer mode="side" class="side-nav bg-primary text-white" opened>
+    <div class="d-flex flex-column flex-shrink-0 p-3" style="width: 250px; height: 100vh;">
+>>>>>>> eea4d43 (navbar bien)
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <span class="fs-4">Admin Panel</span>
       </a>
       <hr>
       <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-          <a  routerLink="/cliente" routerLinkActive="active-link" class="nav-link text-white">
+          <a routerLink="/cliente" routerLinkActive="active-link" class="nav-link text-white">
             <mat-icon>person</mat-icon>
             <span>Cliente</span>
           </a>
         </li>
         <li>
-          <a  routerLink="/venta" routerLinkActive="active-link" class="nav-link text-white">
+          <a routerLink="/venta" routerLinkActive="active-link" class="nav-link text-white">
             <mat-icon>shopping_cart</mat-icon>
             <span>Venta</span>
           </a>
         </li>
         <li>
-          <a  routerLink="/producto" routerLinkActive="active-link" class="nav-link text-white">
+          <a routerLink="/producto" routerLinkActive="active-link" class="nav-link text-white">
             <mat-icon>shopping_cart</mat-icon>
             <span>Producto</span>
           </a>
         </li>
         <li>
-          <a mat-list-item (click)="logout()" *ngIf="usuario" class="nav-link text-white">
+          <a (click)="logout()" *ngIf="usuario" class="nav-link text-white">
             <mat-icon>logout</mat-icon>
             <span>Cerrar sesión</span>
           </a>
@@ -82,6 +103,7 @@
       <div class="d-flex flex-column flex-shrink-0 p-3 bg-primary text-white">
         <button class="btn btn-outline-light btn-sm w-100" (click)="toggleDarkMode()">Toggle Dark Mode</button>
       </div>
+<<<<<<< HEAD
      <!-- </div>-->
   </mat-drawer>
 
@@ -95,15 +117,46 @@
         <router-outlet></router-outlet>
       </mat-drawer-content>
 
+=======
+    </div>
+  </mat-drawer>
 
+  <!-- Contenido principal -->
+  <mat-drawer-content class="main-content">
+
+    <!-- Barra superior -->
+    <div class="d-flex align-items-center bg-light border-bottom top-bar p-2">
+
+      <!-- Botón menú -->
+      <button mat-icon-button (click)="drawer.toggle()" class="me-3">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light p-0 flex-grow-1">
+        <a class="navbar-brand" [routerLink]="'/'">Admin</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="'/Home'">Profile</a>
+            </li>
+            <li class="nav-item">
+              <button class="btn btn-outline-danger ms-3" (click)="logout()">Logout</button>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Contenido dinámico -->
+    <div class="p-3">
+      <router-outlet></router-outlet>
+    </div>
+>>>>>>> eea4d43 (navbar bien)
+
+  </mat-drawer-content>
 
 </mat-drawer-container>
-
-
-
-
-
-
-
-
-
