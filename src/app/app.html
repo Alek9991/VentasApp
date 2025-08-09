@@ -11,52 +11,6 @@
     padding: 0;
   }
 
-<<<<<<< HEAD
-      <a mat-list-item routerLink="/home" routerLinkActive="active-link">
-        <mat-icon>home</mat-icon>
-        <span>Inicio</span>
-      </a>
-
-      <a mat-list-item routerLink="/cliente" routerLinkActive="active-link">
-        <mat-icon>person</mat-icon>
-        <span>Cliente</span>
-      </a>
-
-      <a mat-list-item routerLink="/venta" routerLinkActive="active-link">
-        <mat-icon>shopping_cart</mat-icon>
-        <span>Venta</span>
-      </a>
-      <a mat-list-item routerLink="/producto" routerLinkActive="active-link">
-        <mat-icon>shopping_cart</mat-icon>
-        <span>Producto</span>
-      </a>
-
-      <a mat-list-item (click)="logout()" *ngIf="usuario">
-        <mat-icon>logout</mat-icon>
-        <span>Cerrar sesión</span>
-      </a>
-
-    </mat-nav-list>
-  </mat-drawer>  -->
-
-  <!-- Contenido principal -->
-  <!-- <mat-drawer-content class="main-content">
-    <button mat-icon-button (click)="drawer.toggle()" class="toggle-button">
-      <mat-icon>menu</mat-icon>
-    </button>
-
-    <router-outlet></router-outlet>
-  </mat-drawer-content>
-
-</mat-drawer-container> --> 
-
-
-  
-
-<mat-drawer-container class="global-content" autosize>
-  <mat-drawer #drawer mode="side" class="side-nav" opened>
-    <!--<div class="d-flex flex-column flex-shrink-0 p-3 bg-primary text-white" style="width: 250px; height: 100vh;">-->
-=======
   /* Ajustar el alto del contenedor global */
   .global-content {
     height: 100vh;
@@ -68,7 +22,6 @@
   <!-- Sidebar -->
   <mat-drawer #drawer mode="side" class="side-nav bg-primary text-white" opened>
     <div class="d-flex flex-column flex-shrink-0 p-3" style="width: 250px; height: 100vh;">
->>>>>>> eea4d43 (navbar bien)
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <span class="fs-4">Admin Panel</span>
       </a>
@@ -100,24 +53,9 @@
         </li>
       </ul>
       <hr>
-      <div class="d-flex flex-column flex-shrink-0 p-3 bg-primary text-white">
+      <div class="text-center">
         <button class="btn btn-outline-light btn-sm w-100" (click)="toggleDarkMode()">Toggle Dark Mode</button>
       </div>
-<<<<<<< HEAD
-     <!-- </div>-->
-  </mat-drawer>
-
-  
-      <mat-drawer-content class="main-content">
-        <div>
-        <button mat-icon-button (click)="drawer.toggle()" class="toggle-button">
-          <mat-icon>menu</mat-icon>
-        </button>
-        </div>
-        <router-outlet></router-outlet>
-      </mat-drawer-content>
-
-=======
     </div>
   </mat-drawer>
 
@@ -155,7 +93,6 @@
     <div class="p-3">
       <router-outlet></router-outlet>
     </div>
->>>>>>> eea4d43 (navbar bien)
 
   </mat-drawer-content>
 
