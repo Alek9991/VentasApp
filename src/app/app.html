@@ -42,29 +42,12 @@
 
 </mat-drawer-container> --> 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" [routerLink]="'/dashboard'">Admin</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="'/dashboard'">Profile</a>
-          </li>
-          <li class="nav-item">
-            <button class="btn btn-outline-danger ms-3" (click)="logout()">Logout</button>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+
   
 
 <mat-drawer-container class="global-content" autosize>
   <mat-drawer #drawer mode="side" class="side-nav" opened>
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-primary text-white" style="width: 250px; height: 100vh;">
+    <!--<div class="d-flex flex-column flex-shrink-0 p-3 bg-primary text-white" style="width: 250px; height: 100vh;">-->
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <span class="fs-4">Admin Panel</span>
       </a>
@@ -96,17 +79,19 @@
         </li>
       </ul>
       <hr>
-      <div class="text-center">
+      <div class="d-flex flex-column flex-shrink-0 p-3 bg-primary text-white">
         <button class="btn btn-outline-light btn-sm w-100" (click)="toggleDarkMode()">Toggle Dark Mode</button>
       </div>
-      </div>
+     <!-- </div>-->
   </mat-drawer>
-    
+
+  
       <mat-drawer-content class="main-content">
+        <div>
         <button mat-icon-button (click)="drawer.toggle()" class="toggle-button">
           <mat-icon>menu</mat-icon>
         </button>
-
+        </div>
         <router-outlet></router-outlet>
       </mat-drawer-content>
 
