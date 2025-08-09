@@ -1,7 +1,11 @@
 <!-- Cabecera con título y botón -->
 <div class="header-container">
-  <h1 class="header-title">🧾 Ventas</h1>
-  
+  <h1 class="header-title">
+    <mat-icon>add_shopping_cart</mat-icon> Ventas
+  </h1>
+   <button mat-raised-button color="primary" (click)="openAdd()">
+    <mat-icon>add</mat-icon> Nueva venta
+  </button>
 </div>
 
 <!-- Filtros -->
@@ -23,10 +27,6 @@
       style="padding-left: 8px;"
     />
   </mat-form-field>
-
-  <button mat-raised-button color="primary" (click)="openAdd()">
-    <mat-icon>add</mat-icon> Nueva venta
-  </button>
 </div>
 
 <!-- Botones de exportación -->

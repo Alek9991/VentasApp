@@ -119,6 +119,12 @@ a.mat-list-item:hover {
   color: white !important;
 }
 
+.nav-link mat-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px; /* igual al tamaño del icono */
+}
 
 
 

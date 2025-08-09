@@ -1,94 +1,56 @@
-.header {
+.toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
 }
 
 .search-field {
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 
 .table-container {
-  position: relative;
-  min-height: 100px;
+  overflow-x: auto;
 }
 
-mat-spinner {
-  margin: 40px auto;
-  display: block;
-}
-.green {
-  background-color: #08960d;
-  color: white;
-}
-
-
-// FROMATO ARA VENTA 
 
 .header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1976d2;
+  background-color: #1976d2; /* Azul Material */
   color: white;
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
 }
 
-.botonadd{
-  display: flex;
-  margin-left: 86%;
-  color: white;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-
-}
 .header-title {
   font-size: 1.8rem;
   font-weight: 500;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .filters-container {
- 
   display: flex;
-  
   gap: 1rem;
   margin-bottom: 1rem;
   flex-wrap: wrap;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
- 
-  color: white;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
 }
 
 .filter-field {
-  width: 250px;
+  width: 100%;
+  max-width: 400px;
 }
 
-.table-container {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 8px;
-  overflow-x: auto;
-}
-
-.mat-header-cell {
-  background-color: #e3f2fd;
-  font-weight: bold;
-}
-
-.spinner-centered {
+.export-buttons {
   display: flex;
-  justify-content: center;
-  margin: 2rem 0;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .btn-export-csv {
@@ -101,11 +63,21 @@ mat-spinner {
   color: white;
 }
 
+.table-container {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+}
 
+.mat-header-cell {
+  background-color: #e3f2fd; /* Azul claro */
+  font-weight: bold;
+}
 
-
-
-
-
-
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
 
