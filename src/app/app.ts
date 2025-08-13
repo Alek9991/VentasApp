@@ -72,5 +72,18 @@ constructor(public apiauthService: ApiAuthService,
    toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
     document.body.classList.toggle('dark-mode', this.isDarkMode);
+ 
+  
   }
+
+  chartOptions = {
+  chart: {
+    background: 'transparent',
+    foreColor: this.isDarkMode ? '#e0e0e0' : '#333'
+  },
+  theme: {
+    mode: this.isDarkMode ? 'dark' : 'light'
+  }
+};
+
 }

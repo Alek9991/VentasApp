@@ -1,8 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
 /* You can add global styles to this file, and also import other style files */
 
-  
-  .nav-link.active {
+
+/* Modo oscuro SOLO para el contenido dinámico */
+body.dark-mode .p-3 {
+  background-color: #121212 !important;
+  color: #e0e0e0 !important;
+}
+
+/* Opcional: ajustar tablas e inputs dentro de ese contenedor */
+body.dark-mode .p-3 table {
+  background-color: transparent !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .p-3 .form-control {
+  background-color: #2a2a2a !important;
+  color: #fff !important;
+  border: 1px solid #555 !important;
+}
+//aqui arriba  se mira el backgrond 
+
+
+ .nav-link.active {
     background-color: #007bff;
     color: white !important;
   }
@@ -77,3 +97,83 @@
     background-color: #adb5bd;
     color: #2c3e50;
   }
+
+  body.dark-mode input,
+body.dark-mode .form-control {
+  background-color: #2a2a2a;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+
+
+//AQUI LAS CONFIGRACIONES DE LA TABLA , INPUTS Y TODO LO DE LAS VISTA DE CLIENTES , VENTAS Y PROEDUCTOS 
+
+/* Color claro para el texto dentro de la tabla */
+body.dark-mode .p-3 .mat-cell {
+  color: rgba(255, 255, 255, 0.85); /* blanco suave */
+}
+
+/* Opcional: color para encabezados más brillantes */
+body.dark-mode .p-3 .mat-header-cell {
+  color: #ffffff;
+}
+
+
+
+
+
+/* 📌 Tabla en modo oscuro SOLO dentro del contenedor dinámico */
+body.dark-mode .p-3 .table-container {
+  background-color: #495057; /* Fondo oscuro para el contenedor */
+  color: #e0e0e0;
+  border-radius: 8px;
+}
+
+/* 📌 Cabeceras de la tabla */
+body.dark-mode .p-3 .mat-header-cell {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* 📌 Celdas normales */
+body.dark-mode .p-3 .mat-cell {
+  color: #e0e0e0;
+}
+
+/* 📌 Hover en filas */
+body.dark-mode .p-3 .mat-row:hover {
+  background-color: #333333;
+}
+
+/* 📌 Paginador */
+body.dark-mode .mat-paginator {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+/* 📌 Botones de acción en la tabla */
+body.dark-mode .p-3 button.mat-icon-button {
+  color: #90caf9; /* Azul claro para acciones */
+}
+
+/* 📌 Inputs de filtro */
+body.dark-mode .p-3 .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #888;
+}
+
+body.dark-mode .p-3 .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #ccc;
+}
+
+body.dark-mode .p-3 .mat-input-element {
+  color: #ffffff;
+}
+
+body.dark-mode .p-3 .mat-form-field-label {
+  color: #bbb;
+}
+
+
+
