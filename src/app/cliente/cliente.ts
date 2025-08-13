@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Apicliente } from '../services/apicliente';
-import { Response } from '../models/response';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { DialogClienteComponent } from './dialog/dialogcliente';
@@ -29,7 +28,6 @@ import {
   Legend
 } from 'chart.js';
 
-
 @Component({
   selector: 'app-cliente',
   standalone: true,
@@ -52,10 +50,14 @@ import {
 export class ClienteComponent implements OnInit, AfterViewInit {
   isLoading = false;
   lst = new MatTableDataSource<Cliente>();
-  columnas: string[] = ['id', 'nombre', 'actions'];
+
+  // Quitamos "actions"
+  columnas: string[] = ['id', 'nombre'];
   readonly width = '300px';
 
-  
+  // Nuevo: cliente seleccionado
+  selectedCliente: Cliente | null = null;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -67,14 +69,13 @@ export class ClienteComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.getClientes();
-    this.initChart(); // 👈 Agrega esta línea
-
+    this.initChart();
   }
 
   ngAfterViewInit() {
     this.lst.paginator = this.paginator;
     this.lst.sort = this.sort;
-    // Opcional: define cómo ordenar el nombre ignorando mayúsculas/minúsculas
+
     this.lst.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'nombre': return item.nombre.toLowerCase();
@@ -90,8 +91,7 @@ export class ClienteComponent implements OnInit, AfterViewInit {
       next: (response) => {
         this.lst.data = response.data;
         this.isLoading = false;
-        this.updateChartData(); // esto es para el chart
-
+        this.updateChartData();
       },
       error: (err) => {
         console.error('Error al cargar clientes:', err);
@@ -112,12 +112,30 @@ export class ClienteComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(() => this.getClientes());
   }
 
+  // Nuevo: editar cliente seleccionado
+  editarSeleccionado() {
+    if (!this.selectedCliente) {
+      this.snackBar.open('Selecciona un cliente primero', '', { duration: 2000 });
+      return;
+    }
+    this.openEdit(this.selectedCliente);
+  }
+
   openEdit(cliente: Cliente) {
     const dialogRef = this.dialog.open(DialogClienteComponent, {
       width: this.width,
       data: cliente
     });
     dialogRef.afterClosed().subscribe(() => this.getClientes());
+  }
+
+  // Nuevo: eliminar cliente seleccionado
+  eliminarSeleccionado() {
+    if (!this.selectedCliente) {
+      this.snackBar.open('Selecciona un cliente primero', '', { duration: 2000 });
+      return;
+    }
+    this.delete(this.selectedCliente);
   }
 
   delete(cliente: Cliente) {
@@ -130,147 +148,158 @@ export class ClienteComponent implements OnInit, AfterViewInit {
           if (response.exito === 1) {
             this.snackBar.open('Cliente eliminado con éxito', '', { duration: 2000 });
             this.getClientes();
+            this.selectedCliente = null;
           }
         });
       }
     });
   }
 
-getDatosVisibles(): Cliente[] {
-  const datosOrdenados = this.lst.sortData(this.lst.filteredData.slice(), this.sort!);
-  const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-  return datosOrdenados.slice(startIndex, startIndex + this.paginator.pageSize);
-}
+  // Nuevo: seleccionar cliente
+  seleccionarCliente(cliente: Cliente) {
+    this.selectedCliente = cliente;
+  }
 
+  getDatosVisibles(): Cliente[] {
+    const datosOrdenados = this.lst.sortData(this.lst.filteredData.slice(), this.sort!);
+    const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+    return datosOrdenados.slice(startIndex, startIndex + this.paginator.pageSize);
+  }
 
-    //AGREGAR LO DE DESCARGAR PDF
- exportarCSV() {
-  const paginaActual = this.getDatosVisibles();
+  exportarCSV() {
+    const paginaActual = this.getDatosVisibles();
+    const rows = paginaActual.map(item => [item.id, item.nombre]);
 
-  const rows = paginaActual.map(item => [
-    item.id,
-    item.nombre,
-  ]);
+    const csvContent = [
+      ['ClienteID', 'NombreCliente'],
+      ...rows
+    ].map(e => e.join(",")).join("\n");
 
-  const csvContent = [
-    ['ClienteID', 'NombreCliente'],
-    ...rows
-  ].map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'cliente.csv';
+    a.click();
+  }
 
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'cliente.csv';
-  a.click();
-}
+  exportarPDF() {
+    const doc = new jsPDF();
+    doc.text("Reporte de Clientes", 14, 10);
 
+    const paginaActual = this.getDatosVisibles();
+    const body = paginaActual.map(item => [item.id, item.nombre]);
 
-  
-exportarPDF() {
-  const doc = new jsPDF();
-  doc.text("Reporte de Clientes", 14, 10);
+    autoTable(doc, {
+      head: [['Cliente', 'Nombre']],
+      body: body,
+      startY: 20,
+    });
 
-  const paginaActual = this.getDatosVisibles();
+    doc.save('clientes.pdf');
+  }
 
-  const body = paginaActual.map(item => [
-    item.id,
-    item.nombre,
-  ]);
-
-  autoTable(doc, {
-    head: [['Cliente', 'Nombre']],
-    body: body,
-    startY: 20,
-  });
-
-  doc.save('clientes.pdf');
-}
-
-
-  //CHART
+  // Chart
   lineChart!: Chart;
 
-initChart() {
-  Chart.register(
-    LineController,
-    LineElement,
-    PointElement,
-    LinearScale,
-    CategoryScale,
-    Title,
-    Tooltip,
-    Legend
-  );
+  initChart() {
+    Chart.register(
+      LineController,
+      LineElement,
+      PointElement,
+      LinearScale,
+      CategoryScale,
+      Title,
+      Tooltip,
+      Legend
+    );
 
-  const canvas = document.getElementById('lineChart') as HTMLCanvasElement;
+    const canvas = document.getElementById('lineChart') as HTMLCanvasElement;
 
-  if (canvas) {
-    this.lineChart = new Chart(canvas, {
-      type: 'line',
-      data: {
-        labels: [], // Se llenará luego con nombres o meses
-        datasets: [{
-          label: 'Clientes',
-          data: [],
-          borderColor: 'rgba(75,192,192,1)',
-          fill: false,
-          tension: 0.4
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Clientes por nombre'
-          }
+    if (canvas) {
+      this.lineChart = new Chart(canvas, {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [{
+            label: 'Clientes',
+            data: [],
+            borderColor: 'rgba(75,192,192,1)',
+            fill: false,
+            tension: 0.4
+          }]
         },
-        scales: {
-          x: {
-            type: 'category',
+        options: {
+          responsive: true,
+          plugins: {
             title: {
               display: true,
-              text: 'Cliente'
+              text: 'Clientes por nombre'
             }
           },
-          y: {
-            type: 'linear',
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Cantidad'
+          scales: {
+            x: {
+              type: 'category',
+              title: {
+                display: true,
+                text: 'Cliente'
+              }
+            },
+            y: {
+              type: 'linear',
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Cantidad'
+              }
             }
           }
         }
+      });
+    }
+  }
+
+  updateChartData() {
+    const clientes = this.lst.filteredData;
+    const conteoPorNombre: { [nombre: string]: number } = {};
+
+    clientes.forEach(cliente => {
+      if (conteoPorNombre[cliente.nombre]) {
+        conteoPorNombre[cliente.nombre]++;
+      } else {
+        conteoPorNombre[cliente.nombre] = 1;
       }
     });
-  }
-}
 
-updateChartData() {
-  const clientes = this.lst.filteredData;
+    const labels = Object.keys(conteoPorNombre);
+    const data = Object.values(conteoPorNombre);
 
-  const conteoPorNombre: { [nombre: string]: number } = {};
-
-  clientes.forEach(cliente => {
-    if (conteoPorNombre[cliente.nombre]) {
-      conteoPorNombre[cliente.nombre]++;
-    } else {
-      conteoPorNombre[cliente.nombre] = 1;
+    if (this.lineChart) {
+      this.lineChart.data.labels = labels;
+      this.lineChart.data.datasets[0].data = data;
+      this.lineChart.update();
     }
-  });
+  }
+  // Dentro de tu ClienteComponent.ts
+elementoSeleccionado: any; // Puedes tiparlo si tienes una interfaz Cliente
 
-  const labels = Object.keys(conteoPorNombre);
-  const data = Object.values(conteoPorNombre);
-
-  if (this.lineChart) {
-    this.lineChart.data.labels = labels;
-    this.lineChart.data.datasets[0].data = data;
-    this.lineChart.update();
+  // Este método debe llamarse cuando el usuario selecciona un elemento en tu tabla/lista
+seleccionarElemento(elemento: any) {
+  this.elementoSeleccionado = elemento;
+}
+  copiarSeleccionado() {
+  if (this.elementoSeleccionado) {
+    navigator.clipboard.writeText(JSON.stringify(this.elementoSeleccionado))
+      .then(() => {
+        console.log('Datos copiados al portapapeles');
+      })
+      .catch(err => {
+        console.error('Error al copiar: ', err);
+      });
+  } else {
+    console.warn('No hay elemento seleccionado para copiar.');
   }
 }
 
-  
   
 }

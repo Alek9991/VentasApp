@@ -119,60 +119,11 @@ body.dark-mode .p-3 .mat-header-cell {
   color: #ffffff;
 }
 
-
-
-
-
 /* 📌 Tabla en modo oscuro SOLO dentro del contenedor dinámico */
 body.dark-mode .p-3 .table-container {
   background-color: #495057; /* Fondo oscuro para el contenedor */
   color: #e0e0e0;
   border-radius: 8px;
-}
-
-/* 📌 Cabeceras de la tabla */
-body.dark-mode .p-3 .mat-header-cell {
-  background-color: #2a2a2a;
-  color: #ffffff;
-  font-weight: 600;
-}
-
-/* 📌 Celdas normales */
-body.dark-mode .p-3 .mat-cell {
-  color: #e0e0e0;
-}
-
-/* 📌 Hover en filas */
-body.dark-mode .p-3 .mat-row:hover {
-  background-color: #333333;
-}
-
-/* 📌 Paginador */
-body.dark-mode .mat-paginator {
-  background-color: #1e1e1e;
-  color: #ffffff;
-}
-
-/* 📌 Botones de acción en la tabla */
-body.dark-mode .p-3 button.mat-icon-button {
-  color: #90caf9; /* Azul claro para acciones */
-}
-
-/* 📌 Inputs de filtro */
-body.dark-mode .p-3 .mat-form-field-appearance-outline .mat-form-field-outline {
-  color: #888;
-}
-
-body.dark-mode .p-3 .mat-form-field-appearance-outline .mat-form-field-outline-thick {
-  color: #ccc;
-}
-
-body.dark-mode .p-3 .mat-input-element {
-  color: #ffffff;
-}
-
-body.dark-mode .p-3 .mat-form-field-label {
-  color: #bbb;
 }
 
 
