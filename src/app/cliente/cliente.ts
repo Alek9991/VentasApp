@@ -47,7 +47,8 @@ import {
     MatSortModule
   ],
   templateUrl: './cliente.html',
-  styleUrls: ['./cliente.scss']
+  styleUrls: ['./cliente.scss'],
+  
 })
 export class ClienteComponent implements OnInit, AfterViewInit {
   isLoading = false;

@@ -4,21 +4,23 @@
 
 /* Modo oscuro SOLO para el contenido dinámico */
 body.dark-mode .p-3 {
-  background-color: #121212 !important;
+  //background-color: #121212 !important;
+  background-color: #343a40 !important; /* Fondo oscuro */
   color: #e0e0e0 !important;
+  
 }
 
 /* Opcional: ajustar tablas e inputs dentro de ese contenedor */
 body.dark-mode .p-3 table {
-  background-color: transparent !important;
-  color: #e0e0e0 !important;
-}
+ background-color: transparent !important;
+color: #e0e0e0 !important;
+ }
 
-body.dark-mode .p-3 .form-control {
-  background-color: #2a2a2a !important;
-  color: #fff !important;
-  border: 1px solid #555 !important;
-}
+// body.dark-mode .p-3 .form-control {
+//   background-color: #2a2a2a !important;
+//   color: #fff !important;
+//   border: 1px solid #555 !important;
+// }
 //aqui arriba  se mira el backgrond 
 
 
@@ -80,100 +82,59 @@ body.dark-mode .p-3 .form-control {
     color: #ffffff;
   }
   
-  body.dark-mode .nav-link {
-    color: #adb5bd;
-  }
+  // body.dark-mode .nav-link {
+  //   color: #adb5bd;
+  // }
   
-  body.dark-mode .nav-link.active {
-    background-color: rgba(255, 255, 255, 0.3);
-  }
+  // body.dark-mode .nav-link.active {
+  //   background-color: rgba(255, 255, 255, 0.3);
+  // }
   
-  body.dark-mode .btn-outline-light {
-    border-color: #adb5bd;
-    color: #adb5bd;
-  }
+  // body.dark-mode .btn-outline-light {
+  //   border-color: #adb5bd;
+  //   color: #adb5bd;
+  // }
   
-  body.dark-mode .btn-outline-light:hover {
-    background-color: #adb5bd;
-    color: #2c3e50;
-  }
+  // body.dark-mode .btn-outline-light:hover {
+  //   background-color: #adb5bd;
+  //   color: #2c3e50;
+  // }
 
-  body.dark-mode input,
-body.dark-mode .form-control {
-  background-color: #2a2a2a;
-  color: #fff;
-  border: 1px solid #555;
-}
+//   body.dark-mode input,
+// body.dark-mode .form-control {
+//   background-color: #2a2a2a;
+//   color: #fff;
+//   border: 1px solid #555;
+// }
 
 
 
 //AQUI LAS CONFIGRACIONES DE LA TABLA , INPUTS Y TODO LO DE LAS VISTA DE CLIENTES , VENTAS Y PROEDUCTOS 
-
-/* Color claro para el texto dentro de la tabla */
-body.dark-mode .p-3 .mat-cell {
-  color: rgba(255, 255, 255, 0.85); /* blanco suave */
-}
-
-/* Opcional: color para encabezados más brillantes */
-body.dark-mode .p-3 .mat-header-cell {
-  color: #ffffff;
-}
-
-
-
-
-
 /* 📌 Tabla en modo oscuro SOLO dentro del contenedor dinámico */
-body.dark-mode .p-3 .table-container {
+ body.dark-mode .p-3 .table-container {
   background-color: #495057; /* Fondo oscuro para el contenedor */
-  color: #e0e0e0;
+  color: #ffffff;
+  border-radius: 8px;
+ }
+
+
+
+ // PARA LOS DIALOG 
+
+ .cdk-overlay-container.dark-mode .mat-dialog-container {
+  background-color: #495057 !important; /* Fondo oscuro */
+  color: #fff !important; /* Texto blanco */
   border-radius: 8px;
 }
 
-/* 📌 Cabeceras de la tabla */
-body.dark-mode .p-3 .mat-header-cell {
-  background-color: #2a2a2a;
-  color: #ffffff;
-  font-weight: 600;
+/* Opcional: botones y inputs dentro del diálogo */
+.cdk-overlay-container.dark-mode .mat-dialog-content,
+.cdk-overlay-container.dark-mode .mat-dialog-actions {
+  color: #eee !important;
 }
 
-/* 📌 Celdas normales */
-body.dark-mode .p-3 .mat-cell {
-  color: #e0e0e0;
+.cdk-overlay-container.dark-mode .mat-button,
+.cdk-overlay-container.dark-mode button.mat-raised-button {
+  color: #eee !important;
 }
-
-/* 📌 Hover en filas */
-body.dark-mode .p-3 .mat-row:hover {
-  background-color: #333333;
-}
-
-/* 📌 Paginador */
-body.dark-mode .mat-paginator {
-  background-color: #1e1e1e;
-  color: #ffffff;
-}
-
-/* 📌 Botones de acción en la tabla */
-body.dark-mode .p-3 button.mat-icon-button {
-  color: #90caf9; /* Azul claro para acciones */
-}
-
-/* 📌 Inputs de filtro */
-body.dark-mode .p-3 .mat-form-field-appearance-outline .mat-form-field-outline {
-  color: #888;
-}
-
-body.dark-mode .p-3 .mat-form-field-appearance-outline .mat-form-field-outline-thick {
-  color: #ccc;
-}
-
-body.dark-mode .p-3 .mat-input-element {
-  color: #ffffff;
-}
-
-body.dark-mode .p-3 .mat-form-field-label {
-  color: #bbb;
-}
-
-
 

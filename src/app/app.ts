@@ -69,12 +69,27 @@ constructor(public apiauthService: ApiAuthService,
   }
 
 
-   toggleDarkMode() {
-    this.isDarkMode = !this.isDarkMode;
-    document.body.classList.toggle('dark-mode', this.isDarkMode);
+  //  toggleDarkMode() {
+  //   this.isDarkMode = !this.isDarkMode;
+  //   document.body.classList.toggle('dark-mode', this.isDarkMode);
  
   
+  // }
+
+
+  toggleDarkMode() {
+  this.isDarkMode = !this.isDarkMode;
+  document.body.classList.toggle('dark-mode', this.isDarkMode);
+
+  const overlayContainer = document.querySelector('.cdk-overlay-container');
+  if (overlayContainer) {
+    if (this.isDarkMode) {
+      overlayContainer.classList.add('dark-mode');
+    } else {
+      overlayContainer.classList.remove('dark-mode');
+    }
   }
+}
 
   chartOptions = {
   chart: {
